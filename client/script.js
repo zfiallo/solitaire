@@ -21,7 +21,7 @@ class Card {
 }
 
 function newDeck() {
-    // hearts = 1, diamonds = 2, spades = 3, clubs = 4
+    // spades = 1, hearts = 2, clubs = 3, diamonds = 4
     for (let s = 1; s <= 4; s++) {
         for (n = 1; n <= 13; n++) {
             deck.push(new Card(s, n));

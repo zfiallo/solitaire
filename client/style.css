@@ -1,5 +1,5 @@
 body {
-    background-image: url("assets/background2.png");
+    background-image: url("assets/background.png");
     background-size: contain;
     margin:0;
     padding:0;
@@ -24,7 +24,7 @@ footer {
     position:fixed;
 }
 .stock {
-    background-image: url("assets/stockBackground.png");
+    background-image: url("assets/stock.png");
     background-repeat:no-repeat;
     margin-left: 800px;
     margin-top:50px;
@@ -33,7 +33,7 @@ footer {
     -webkit-transform: scale(2, 2);
 }
 .tableau {
-    background-image: url("assets/tableauBackground.png");
+    background-image: url("assets/tableau.png");
 }
 .foundation {
     margin-left: 1300px;
