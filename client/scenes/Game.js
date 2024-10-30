@@ -1,9 +1,9 @@
 import { Scene } from 'phaser';
-import { Deck } from '..objects/Deck.js';
-import { Card } from '..objects/Card.js';
-import { Stack } from '..objects/Stack.js';
+import { deck } from '..objects/deck.js';
+import { Card } from '..objects/card.js';
+import { Stack } from '..objects/stack.js';
 
-export class Game extends Scene 
+export class Game extends Phaser.Scene 
 {
     constructor () 
     {
@@ -21,7 +21,11 @@ export class Game extends Scene
 
     create () 
     {
+        this.add.image(auto, auto, 'background');
+        
         this.Deck = new Deck();
+
+        
     }
 
     update () 

@@ -81,9 +81,7 @@ function moveCard(card, target, x, y) {
 // cancel move, play move card back animation
 // check if 4 stacks are full, if yes end game
 
-document.getElementById("card")
 
-Card.input.enableDrag(true);
 
 }
 
