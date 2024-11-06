@@ -1,10 +1,12 @@
+
 export default class Card {
-    constructor(scene) {
-        let  suit;
-        let number;
-        let sprite;
+    constructor(scene, suit, number) {
+        suit  = this.suit;
+        number = this.number;
+        let isFlipped = false;
         let frame;
-        let isFlipped = true;
+        let sprite;
+        let onTop = false;
 
         // Determines spritesheet frame from card data
         if (suit == 1) {
@@ -17,18 +19,39 @@ export default class Card {
             frame = number + 38;
         }
 
-        this.render = (x, y, sprite) => {
-            let sprite = this.add.sprite(x, y, 'cardSprites', frame);
-            let card = scene.add.image(suit, number, sprite).setScale(1,1).setInteractive.setData({
-                "suit": this.suit,
-                "number": this.number,
-                "sprite": this.sprite
-            });
+        this.render = (x, y) => {
+            
+            if(isFlipped) {
+                sprite = 'cardSprites';
+            } else {
+                sprite = 'cardBack';
+            }
+
             if (onTop) {
                 card.isFlipped = true;
                 scene.input.setDraggable(card);
             }
-            return card;
+
+            scene.add.sprite(x, y, sprite, frame).setScale(1,1).setInteractive().setData({
+                "suit": suit,
+                "number": number
+            }).on('drag', function (pointer, gameObject, dragX, dragY) {
+                gameObject.x = dragX;
+                gameObject.y = dragY;
+            });
+        
+        }
+
+        this.flipCard = (Card) => {
+            isFlipped = true;
+
+        }
+
+        this.getCard = (Card) => {
+            return Card;
+        }
+        this.setCard = (newCard) => {
+            this.Card = newCard;
         }
     }
 }

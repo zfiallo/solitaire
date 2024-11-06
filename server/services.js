@@ -1,6 +1,6 @@
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require('mongodb').ObjectId; 
-const DBNAME = "library";
+const DBNAME = "solitaire";
 
 //Define Database URL
 const dbURL = process.env.DB_URI || "mongodb://127.0.0.1";
@@ -17,6 +17,8 @@ var services = function(app) {
             publisher: req.body.publisher, 
             yearPublished: req.body.yearPublished, 
             isbn: req.body.isbn */
+
+            // username, password, gameSave
         };
 
         try {
@@ -27,7 +29,7 @@ var services = function(app) {
             const db = conn.db(DBNAME);
 
             //create a collection (table) object
-            const coll = db.collection('game');
+            const coll = db.collection('solitaire');
 
             //Insert the record into the table desired
             await coll.insertOne(data);
@@ -51,7 +53,7 @@ var services = function(app) {
         try {
             const conn = await client.connect();
             const db = conn.db(DBNAME);
-            const coll = db.collection('game');
+            const coll = db.collection('solitaire');
 
             //Get data and put into an array
             const data = await coll.find().toArray();
