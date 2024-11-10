@@ -28,7 +28,8 @@ export default class Game extends Phaser.Scene {
         this.Tableau = new Tableau(this);
         this.Tableau.render(243, 230);
 
-        console.log(this.Deck.getDeck());
+        //this.Card = new Card(this);
+        //this.Card.render(0,0);
 
     }
 

@@ -7,7 +7,6 @@ export default class Deck {
 
         this.render = (x, y) => {
             let deckSprite;
-            //let wasteSprite;
 
             if (deck.length > 20) {
                 deckSprite = 'cardBack3';
@@ -29,11 +28,13 @@ export default class Deck {
                 if(deck.length  == 0) {
                     deck.push(waste);
                 }
-    
-                this.Card = new Card(this);
+
                 this.Card = deck.lastIndexOf;
-                this.Card.render(283+(i*5), 100);
-    
+        
+                this.Card.setVisible(true);
+               // this.Card.setVisible(true);
+                //this.Card.render(scene, 0, 0);
+                //this.Card.render(283+(i*5), 100);
                 waste.push(deck.pop());
                 i++;
             });  
@@ -42,10 +43,12 @@ export default class Deck {
         this.createDeck = () => {
             let temp = [];
 
-            // creates cards - spades = 1, hearts = 2, clubs = 3, diamonds = 4
+            // adds cards - spades = 1, hearts = 2, clubs = 3, diamonds = 4
             for (let s = 1; s <= 4; s++) {
                 for (let n = 1; n <= 13; n++) {
-                    deck.push(new Card(this, s, n));
+                    this.Card = new Card(this);
+                    //this.Card.render(0, 0, s, n);
+                    deck.push(this.Card.render(0, 0, s, n));
                 }
             }
 
@@ -63,8 +66,6 @@ export default class Deck {
                     deck.splice(k, 1);
                 }
             }
-
-            return deck;
         }
 
         this.deal = () => {
