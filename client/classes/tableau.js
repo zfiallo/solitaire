@@ -1,11 +1,12 @@
 export default class Tableau {
     constructor(scene) {
-        this.tableau = [new Array(), new Array(), new Array(), new Array(), new Array(), new Array(), new Array()];
+        let tableau = [new Array(), new Array(), new Array(), new Array(), new Array(), new Array(), new Array()];
 
         this.render = (x,y) => {
             //spacing
             let s = 90;
 
+            //placeholder image, remove when done
             scene.add.image(x, y, 'foundation').setScale(1,1);
             scene.add.image(x + s, y, 'foundation').setScale(1,1);
             scene.add.image(x + s*2, y, 'foundation').setScale(1,1);

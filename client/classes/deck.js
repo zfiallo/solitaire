@@ -4,39 +4,45 @@ export default class Deck {
     constructor(scene) {
         let deck = [];
         let waste = [];
+        let hidden = [];
+        let resetDeck = false;
 
         this.render = (x, y) => {
-            let deckSprite;
+            let i = 0;
 
-            if (deck.length > 20) {
-                deckSprite = 'cardBack3';
-            } else if (deck.length > 10) {
-                deckSprite = 'cardBack2';
-            } else if (deck.length > 0) {
-                deckSprite = 'cardBack';
-            } else if (deck.length == 0) {
-                deckSprite = 'stock';
-            }
+            let deckSprite = scene.add.sprite(x, y, 'deckSprites').setFrame(0).setScale(1,1).setInteractive().on('pointerdown', () => {
 
-            scene.add.image(x, y, deckSprite).setScale(1,1).setInteractive().on('pointerdown', () => {
-                let i;
+                if (deck.length > 20) {
+                    deckSprite.setFrame(1);
+                } else if (deck.length > 10) {
+                    deckSprite.setFrame(2);
+                } else if (deck.length == 0) {
+                    deckSprite.setFrame(3);
+                }
 
-                if ((deck.length % 3) == 0) {
+                if(resetDeck) {
+                    waste[i-1].setVisible(false);
+                    deckSprite.setFrame(1);
+                    deck = waste.reverse();
+                    waste = [];
                     i = 0;
-                    
-                }
-                if(deck.length  == 0) {
-                    deck.push(waste);
+                    resetDeck = false;
+                    return;
                 }
 
-                this.Card = deck.lastIndexOf;
-        
-                this.Card.setVisible(true);
-               // this.Card.setVisible(true);
-                //this.Card.render(scene, 0, 0);
-                //this.Card.render(283+(i*5), 100);
+                if(deck.length == 0) {
+                    resetDeck = true;
+                    return;
+                }
+
+                if(i > 0) {
+                    waste[i - 1].setVisible(false);
+                }
+
                 waste.push(deck.pop());
-                i++;
+                waste[i].setVisible(true).setX(330).setY(100);
+                waste[i].setInteractive({draggable: true});
+                i = i + 1; 
             });  
         }
 
@@ -46,9 +52,7 @@ export default class Deck {
             // adds cards - spades = 1, hearts = 2, clubs = 3, diamonds = 4
             for (let s = 1; s <= 4; s++) {
                 for (let n = 1; n <= 13; n++) {
-                    this.Card = new Card(this);
-                    //this.Card.render(0, 0, s, n);
-                    deck.push(this.Card.render(0, 0, s, n));
+                    deck.push(new Card(scene).render(0, 0, s, n));
                 }
             }
 
@@ -66,9 +70,10 @@ export default class Deck {
                     deck.splice(k, 1);
                 }
             }
+            return deck;
         }
 
-        this.deal = () => {
+        this.deal = (scene) => {
             for (let i = 1; i <= 7; i++) {
                 tableau[7].push(deck.pop());
             }

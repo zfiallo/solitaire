@@ -1,4 +1,4 @@
-import Card from '../classes/card.js';
+//import Card from '../classes/card.js';
 import Deck from '../classes/deck.js';
 import Foundation from '../classes/foundation.js';
 import Tableau from '../classes/tableau.js';
@@ -9,12 +9,9 @@ export default class Game extends Phaser.Scene {
     }
 
     preload () {
-        this.load.spritesheet('cardSprites', "/client/assets/cardSprites.png", {frameHeight: 95, frameWidth : 70, endFrame: 51});
-        this.load.image('stock', '/client/assets/stock.png');
+        this.load.spritesheet('cardSprites', "/client/assets/cardSprites.png", {frameHeight: 96, frameWidth : 71, endFrame: 51});
+        this.load.spritesheet('deckSprites', "/client/assets/deckSprites.png", {frameHeight: 98, frameWidth : 75, endFrame: 3});
         this.load.image('foundation', '/client/assets/foundation.png');
-        this.load.image('cardBack', '/client/assets/cardBack.png');
-        this.load.image('cardBack2', '/client/assets/cardBack2.png');
-        this.load.image('cardBack3', '/client/assets/cardBack3.png');
     }
 
     create () {
@@ -28,8 +25,6 @@ export default class Game extends Phaser.Scene {
         this.Tableau = new Tableau(this);
         this.Tableau.render(243, 230);
 
-        //this.Card = new Card(this);
-        //this.Card.render(0,0);
 
     }
 

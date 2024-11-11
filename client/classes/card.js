@@ -1,17 +1,10 @@
 
 export default class Card {
     constructor(scene) {
-        //let suit
-        //let number;
-        //suit = this.suit;
-        //number = this.number;
         //let isFlipped = false;
         //let onTop = false;
-        //let sprite;
 
         this.render = (x, y, suit, number) => {
-            //suit = this.suit;
-            //number = this.number;
             let frame;
 
             // Determines spritesheet frame from card data
@@ -32,37 +25,29 @@ export default class Card {
                 sprite = 'cardBack';
             }*/
 
-            let card = scene.add.sprite(x, y, 'cardSprites').setFrame(frame).setScale(1,1).setVisible(false).setInteractive().setData({
+            let card = scene.add.sprite(x, y, 'cardSprites').setFrame(frame).setVisible(false).setData({
                 "suit" : this.suit,
                 "number": this.number
-            }).on('drag', (pointer, gameObject, dragX, dragY) => {
-                gameObject.x = dragX;
-                gameObject.y = dragY;
+            }).on('drag', (pointer, dragX, dragY) => {
+                card.depth = 1;
+                card.x = dragX;
+                card.y = dragY;
+            }).on('dragend', (pointer) => {
+                card.x = 330;
+                card.y = 100;
             });
 
             return card;
         }
 
-        /*this.flipCard = (Card) => {
-            isFlipped = true;
+        this.setVisible = (card) => {
+            this.card.setVisible(true);
 
         }
 
-        this.getImg = () => {
-            return img;
+        this.flipCard = (card) => {
+            this.card.setSprite('deckSprites').setFrame(2);
         }
-
-        this.setData = (suit, number) => {
-            suit = this.suit;
-            number = this.number;
-        }*/
 
     }
 }
-
-/*
-.on('drag', function (pointer, gameObject, dragX, dragY) {
-                gameObject.x = dragX;
-                gameObject.y = dragY;
-            });
-*/
