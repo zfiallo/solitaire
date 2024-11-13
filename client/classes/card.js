@@ -2,7 +2,7 @@
 export default class Card {
     constructor(scene) {
         //let isFlipped = false;
-        //let onTop = false;
+        let onTop = false;
 
         this.render = (x, y, suit, number) => {
             let frame;
@@ -18,36 +18,33 @@ export default class Card {
                 frame = number + 38;
             }
 
-            //sprite = 'cardSprites';
-            /*if(isFlipped) {
-                sprite = 'cardSprites';
-            } else {
-                sprite = 'cardBack';
-            }*/
-
             let card = scene.add.sprite(x, y, 'cardSprites').setFrame(frame).setVisible(false).setData({
                 "suit" : this.suit,
                 "number": this.number
+            }).on('pointerdown', () => {
+                card.setTexture('cardSprites', frame);
+                card.setInteractive({draggable: true});   // doesnt work      
             }).on('drag', (pointer, dragX, dragY) => {
-                card.depth = 1;
+                card.depth = 100;
                 card.x = dragX;
                 card.y = dragY;
             }).on('dragend', (pointer) => {
                 card.x = 330;
                 card.y = 100;
+            }).on('dragenter', (pointer, card, dropZone) => {
+                //card.x = dragX;
+                //card.y = dragY;
             });
-
+            
+            /*
+            if(onTop) {
+                card.on('pointerdown', () => {
+                    card.setTexture('cardSprites', frame);
+                    card.setInteractive({draggable: true});
+                });
+            }
+            */
             return card;
         }
-
-        this.setVisible = (card) => {
-            this.card.setVisible(true);
-
-        }
-
-        this.flipCard = (card) => {
-            this.card.setSprite('deckSprites').setFrame(2);
-        }
-
     }
 }

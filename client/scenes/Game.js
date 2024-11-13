@@ -1,4 +1,3 @@
-//import Card from '../classes/card.js';
 import Deck from '../classes/deck.js';
 import Foundation from '../classes/foundation.js';
 import Tableau from '../classes/tableau.js';
@@ -19,13 +18,13 @@ export default class Game extends Phaser.Scene {
         this.Deck.createDeck();
         this.Deck.render(243, 100);
 
+        this.Tableau = new Tableau(this, this.Deck.deal());
+        this.Tableau.render(243, 230);
+
         this.Foundation = new Foundation(this);
         this.Foundation.render(543, 100);
 
-        this.Tableau = new Tableau(this);
-        this.Tableau.render(243, 230);
-
-
+        //console.log();
     }
 
     update () {

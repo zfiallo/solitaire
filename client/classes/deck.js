@@ -1,11 +1,12 @@
 import Card from '../classes/card.js';
+import Tableau from '../classes/tableau.js'
 
 export default class Deck {
     constructor(scene) {
         let deck = [];
         let waste = [];
         let hidden = [];
-        let resetDeck = false;
+        let reset = false;
 
         this.render = (x, y) => {
             let i = 0;
@@ -20,18 +21,18 @@ export default class Deck {
                     deckSprite.setFrame(3);
                 }
 
-                if(resetDeck) {
+                if(reset) {
                     waste[i-1].setVisible(false);
                     deckSprite.setFrame(1);
                     deck = waste.reverse();
                     waste = [];
                     i = 0;
-                    resetDeck = false;
+                    reset = false;
                     return;
                 }
 
                 if(deck.length == 0) {
-                    resetDeck = true;
+                    reset = true;
                     return;
                 }
 
@@ -73,30 +74,24 @@ export default class Deck {
             return deck;
         }
 
-        this.deal = (scene) => {
-            for (let i = 1; i <= 7; i++) {
-                tableau[7].push(deck.pop());
+        this.deal = () => { 
+            let tableau = [[], [], [], [], [], [], []];
+
+            for (let i = 6; i >= 0; i--) {
+                for (let j = i; j >= 0; j--) {
+                    tableau[i].push(deck.pop());
+                }
             }
-            for (let i = 1; i <= 6; i++) {
-                tableau[6].push(deck.pop());
-            }
-            for (let i = 1; i <= 5; i++) {
-                tableau[5].push(deck.pop());
-            }
-            for (let i = 1; i <= 4; i++) {
-                tableau[4].push(deck.pop());
-            }
-            for (let i = 1; i <= 3; i++) {
-                tableau[3].push(deck.pop());
-            }
-            for (let i = 1; i <= 2; i++) {
-                tableau[2].push(deck.pop());
-            }
-            tableau[1].push(deck.pop());
+
+            return tableau;
         }
 
         this.getDeck = () => {
             return deck;
+        }
+
+        this.flipCard = (card) => {
+            card.setTexture('deckSprites', [2]);
         }
     }
 }

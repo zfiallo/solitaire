@@ -1,20 +1,28 @@
 export default class Tableau {
-    constructor(scene) {
-        let tableau = [new Array(), new Array(), new Array(), new Array(), new Array(), new Array(), new Array()];
+    constructor(scene, tableau) {
+        //let tableau = [[], [], [], [], [], [], []];
+       // let tableau = this.tableau;
 
         this.render = (x,y) => {
-            //spacing
-            let s = 90;
+            // vertical spacing
+            let s = 20;
 
-            //placeholder image, remove when done
-            scene.add.image(x, y, 'foundation').setScale(1,1);
-            scene.add.image(x + s, y, 'foundation').setScale(1,1);
-            scene.add.image(x + s*2, y, 'foundation').setScale(1,1);
-            scene.add.image(x + s*3, y, 'foundation').setScale(1,1);
-            scene.add.image(x + s*4, y, 'foundation').setScale(1,1);
-            scene.add.image(x + s*5, y, 'foundation').setScale(1,1);
-            scene.add.image(x + s*6, y, 'foundation').setScale(1,1);
+            // horizonal spacing was 90
 
+            // renders dealt cards
+            for (let i = 6; i >= 0; i--) {
+                for (let j = i; j >= 0; j--) {
+                    if (i > j) {
+                        this.flipCard(tableau[i][j]);
+                        tableau[i][j].setInteractive({draggable: false});
+                    }
+                    if (i == j) {
+                        tableau[i][j].setInteractive({draggable: true});
+                    }
+                    tableau[i][j].depth = j + 1;
+                    tableau[i][j].setVisible(true).setX(243 + (i*90)).setY(230 + (j * s));
+                }
+            }
 
             let t1 = scene.add.zone(x, y, 95, 70).setRectangleDropZone(95,70).setScale(1,1).setData({
                 "cards": 0
@@ -37,6 +45,14 @@ export default class Tableau {
             let t7 = scene.add.zone(x + 480, y, 95, 70).setRectangleDropZone(95,70).setScale(1,1).setData({
                 "cards": 0
             });
+        }
+
+        this.getArray = (i) => {
+            return this.tableau[i];
+        }
+
+        this.flipCard = (card) => {
+            card.setTexture('deckSprites', [2]);
         }
     }
 }
