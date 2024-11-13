@@ -29,8 +29,8 @@ export default class Card {
                 card.x = dragX;
                 card.y = dragY;
             }).on('dragend', (pointer) => {
-                card.x = 330;
-                card.y = 100;
+                //card.x = 330;
+                //card.y = 100;
             }).on('dragenter', (pointer, card, dropZone) => {
                 //card.x = dragX;
                 //card.y = dragY;

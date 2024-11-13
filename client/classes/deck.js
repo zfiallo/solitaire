@@ -5,7 +5,7 @@ export default class Deck {
     constructor(scene) {
         let deck = [];
         let waste = [];
-        let hidden = [];
+        //let hidden = [];
         let reset = false;
 
         this.render = (x, y) => {
@@ -13,9 +13,11 @@ export default class Deck {
 
             let deckSprite = scene.add.sprite(x, y, 'deckSprites').setFrame(0).setScale(1,1).setInteractive().on('pointerdown', () => {
 
-                if (deck.length > 20) {
+                if (deck.length > 16) {
+                    deckSprite.setFrame(0);
+                } else if (deck.length > 8) {
                     deckSprite.setFrame(1);
-                } else if (deck.length > 10) {
+                } else if (deck.length > 0) {
                     deckSprite.setFrame(2);
                 } else if (deck.length == 0) {
                     deckSprite.setFrame(3);
@@ -23,7 +25,7 @@ export default class Deck {
 
                 if(reset) {
                     waste[i-1].setVisible(false);
-                    deckSprite.setFrame(1);
+                    deckSprite.setFrame(0);
                     deck = waste.reverse();
                     waste = [];
                     i = 0;
