@@ -1,17 +1,33 @@
 import Card from '../classes/card.js';
-import Tableau from '../classes/tableau.js'
 
 export default class Deck {
     constructor(scene) {
         let deck = [];
         let waste = [];
-        //let hidden = [];
         let reset = false;
 
         this.render = (x, y) => {
             let i = 0;
 
             let deckSprite = scene.add.sprite(x, y, 'deckSprites').setFrame(0).setScale(1,1).setInteractive().on('pointerdown', () => {
+                if(reset) {
+                    waste[i-1].setVisible(false);
+                    deckSprite.setFrame(0);
+                    deck = waste.toReversed();
+                    waste = [];
+                    i = 0;
+                    reset = false;
+                    return;
+                }
+
+                if(i > 0) {
+                    waste[i - 1].setVisible(false);
+                }
+
+                waste.push(deck.pop());
+                waste[i].setVisible(true).setPosition(330, 100);
+                scene.input.setDraggable(waste[i]);
+                i = i + 1; 
 
                 if (deck.length > 16) {
                     deckSprite.setFrame(0);
@@ -21,31 +37,9 @@ export default class Deck {
                     deckSprite.setFrame(2);
                 } else if (deck.length == 0) {
                     deckSprite.setFrame(3);
-                }
-
-                if(reset) {
-                    waste[i-1].setVisible(false);
-                    deckSprite.setFrame(0);
-                    deck = waste.reverse();
-                    waste = [];
-                    i = 0;
-                    reset = false;
-                    return;
-                }
-
-                if(deck.length == 0) {
                     reset = true;
                     return;
                 }
-
-                if(i > 0) {
-                    waste[i - 1].setVisible(false);
-                }
-
-                waste.push(deck.pop());
-                waste[i].setVisible(true).setX(330).setY(100);
-                waste[i].setInteractive({draggable: true});
-                i = i + 1; 
             });  
         }
 
@@ -55,7 +49,7 @@ export default class Deck {
             // adds cards - spades = 1, hearts = 2, clubs = 3, diamonds = 4
             for (let s = 1; s <= 4; s++) {
                 for (let n = 1; n <= 13; n++) {
-                    deck.push(new Card(scene).render(0, 0, s, n));
+                    deck.push(new Card(scene, s, n).render(0, 0));
                 }
             }
 
@@ -88,12 +82,12 @@ export default class Deck {
             return tableau;
         }
 
-        this.getDeck = () => {
-            return deck;
-        }
+        //this.getDeck = () => {
+        //    return deck;
+        //}
 
-        this.flipCard = (card) => {
-            card.setTexture('deckSprites', [2]);
-        }
+        //this.flipCard = (card) => {
+        //    card.setTexture('deckSprites', [2]);
+        //}
     }
 }
