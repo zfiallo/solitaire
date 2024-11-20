@@ -2,12 +2,55 @@ export default class Tableau {
     constructor(scene, tableau) {
 
         this.render = (x, y) => {
+            let h = 90;     // horizonal spacing
             let v = 20;     // vertical spacing     
-            let h = 80;     // horizonal spacing
+            // card height = 95, width = 70
+            
+            this.renderZones(x, y, h, v);
 
-            // renders dealt cards
-            for (let i = 6; i >= 0; i--) {
-                for (let j = i; j >= 0; j--) {
+            this.renderDealtCards();
+
+            this.update(x, y, h, v);
+
+            return tableau;
+        }
+
+        this.renderZones = (x, y, h, v) => {
+            for (let i = 0; i < 7; i++) {
+                //let zone = 
+                scene.add.zone(x + (h * i), y + 120, 75, 340).setDepth(-1).setInteractive({
+                    dropZone: true,
+                }).setData({
+                    "type": 'tableau',
+                    'array': tableau[i]
+                });
+                //this.debugZones(zone);
+            }
+        }
+
+        this.debugZones = (dropZone) => {
+            scene.add.graphics().lineStyle(4, 0xff69b4).strokeRect(dropZone.x - dropZone.input.hitArea.width / 2, dropZone.y - dropZone.input.hitArea.height / 2, dropZone.input.hitArea.width, dropZone.input.hitArea.height);
+        }
+
+        this.update = (x, y, h, v) => {
+            for (let i = 0; i < 7; i++) {
+                for (let j = 0; j <= tableau[i].length-1; j++) {
+                    tableau[i][j].onTop = false;
+                    tableau[i][j].setVisible(true).setPosition(x + (i * h), y + (j * v)).setDepth(j + 1).setData({
+                        "location": tableau[i],
+                        "originX": x + (i * h),
+                        "originY": y + (j * v)
+                    });
+                    if (j == tableau[i].length-1) {
+                        tableau[i][j].onTop = true;
+                    }
+                }
+            }
+        }
+
+        this.renderDealtCards = () => {
+            for (let i = 0; i < 7; i++) {
+                for (let j = 0; j <= i; j++) {
                     if (i > j) {
                         tableau[i][j].setTexture('deckSprites', [2]);
                         tableau[i][j].isFlipped = true;
@@ -16,74 +59,16 @@ export default class Tableau {
                         scene.input.setDraggable(tableau[i][j]);
                         tableau[i][j].onTop = true;
                     }
-                    tableau[i][j].depth = j + 1;
-                    tableau[i][j].setVisible(true).setPosition(243 + (i * 90), 230 + (j * v));
                 }
             }
-
-            //for(let i = 0; i > 7; i++) {
-            //    tableau[i].lastIndexOf.onTop = true;
-            //}
-
-            // width was 70
-
-            // render drop zones
-            /*
-            for (let k = 0; k < 7; k++) {
-                scene.add.zone(x + (h * k), y).setRectangleDropZone(tableau[k].lastIndexOf().y, 95).setInteractive({
-                    dropZone: true
-                }).setData({
-                    "cards": 0
-                });
-            }
-            */
-            ///*
-            let dropZone = scene.add.zone(x, y).setRectangleDropZone(95, 70).setInteractive({
-                dropZone: true
-            }).setData({
-                "cards": 0
-            });
-            let t2 = scene.add.zone(x + h, y).setRectangleDropZone(95, 70).setInteractive({
-                dropZone: true
-            }).setData({
-                "cards": 0
-            });
-            let t3 = scene.add.zone(x + (2 * h), y).setRectangleDropZone(95, 70).setInteractive({
-                dropZone: true
-            }).setData({
-                "cards": 0
-            });
-            let t4 = scene.add.zone(x + (3 * h), y).setRectangleDropZone(95, 70).setInteractive({
-                dropZone: true
-            }).setData({
-                "cards": 0
-            });
-            let t5 = scene.add.zone(x + (4 * h), y).setRectangleDropZone(95, 70).setInteractive({
-                dropZone: true
-            }).setData({
-                "cards": 0
-            });
-            let t6 = scene.add.zone(x + (5 * h), y).setRectangleDropZone(95, 70).setInteractive({
-                dropZone: true
-            }).setData({
-                "cards": 0
-            });
-            let t7 = scene.add.zone(x + (6 * h), y).setRectangleDropZone(95, 70).setInteractive({
-                dropZone: true
-            }).setData({
-                "cards": 0
-            });
-            //*/
         }
 
-        //this.getArray = (i) => {
-        //    return this.tableau[i];
-        //}
-        /*
-        this.flipCard = (card) => {
-            card.setTexture('deckSprites', [2]);
-            card.setInteractive({draggable: false});
-            card.isFlipped = true;
-        }*/
+        this.getTableau = () => {
+            return this.tableau;
+        }
+
+        this.setTableau = (tableau) => {
+            this.tableau = tableau;
+        }
     }
 }

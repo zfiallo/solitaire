@@ -1,50 +1,73 @@
-
-import Tableau from '../classes/tableau.js';
 export default class Card {
     constructor(scene, suit, number) {
         let frame;
         let isFlipped = false;
-        //let onTop = false;
+        let onTop = false;
+        let color;
 
-        // Determines spritesheet frame from card data
+        // Determines spritesheet frame and suit color
         if (suit == 1) {
             frame = number - 1;
+            color = 1;
         } else if (suit == 2) {
             frame = number + 12;
+            color = 2;
         } else if (suit == 3) {
             frame = number + 25;
+            color = 1;
         } else if (suit == 4) {
             frame = number + 38;
+            color = 2;
         }
-
+        
         this.render = (x, y) => {
+            let originX = x;
+            let originY = y;
 
             let card = scene.add.sprite(x, y, 'cardSprites').setFrame(frame).setVisible(false).setInteractive({
                 draggable: false
             }).setData({
-                "suit" : this.suit,
-                "number": this.number
+                "suit" : suit,
+                "number": number,
+                "location": [],
+                "color": color,
+                "originX": originX,
+                "originY": originY
             }).on('pointerdown', () => {
-                if(!isFlipped) {
+                if(card.isFlipped && card.onTop) {
                     card.setTexture('cardSprites', frame);
                     scene.input.setDraggable(card);
                 }
             }).on('drag', (pointer, dragX, dragY) => {
-                scene.children.bringToTop(card);
-                card.x = dragX;
-                card.y = dragY;
-            }).on('dragend', (pointer, dragX, dragY) => {
-                //card.x = x;
-                //card.y = y;
-            }).on('drop', (pointer, card, dropZone) => {
-                card.x = dropZone.x;
-                card.y = dropZone.y;
-                //card.x = Phaser.Math.Snap.To(dropZone.x, 32);
-                //card.y = Phaser.Math.Snap.To(dropZone.y, 32);
-                //card.setPosition(dropZone.x, dropZone.y);
+                let thisArray =  card.getData('location');
+
+                if ((thisArray.length - 1) != thisArray.indexOf(card)) {
+                    let group = scene.add.group();
+
+                    for (let i = thisArray.indexOf(card); i <= thisArray.length - 1; i++) {
+                        group.add(thisArray.at(i));
+                        scene.children.bringToTop(thisArray.at(i));
+                    }
+                    
+                    card.setData({'group': group});
+                    group.setXY(dragX, dragY, 0, 20);
+                    return group;
+                } else {
+                    scene.children.bringToTop(card);
+                    card.x = dragX;
+                    card.y = dragY;
+                }
             });
             
             return card;
+        }
+
+        this.getLocation = () => {
+            return this.location;
+        }
+
+        this.setLocation = (location) => {
+            this.location = location;
         }
     }
 }

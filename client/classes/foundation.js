@@ -5,42 +5,53 @@ export default class Foundation {
         this.render = (x, y) => {
             let s = 80;     // horizontal spacing
             
-            /*
-            for (let i = 0; i > 4; i++) {
-                scene.add.image(x + s*i, y, 'foundation').setScale(1,1);
-                scene.add.zone(x + s*i, y).setRectangleDropZone(70, 95).setInteractive({
+            this.renderZones(x, y, s);
+
+
+        }
+
+        this.update = (x, y, s) => {
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j <= foundation[i].length-1; j++) {
+                    foundation[i][j].onTop = false;
+                    foundation[i][j].setVisible(true).setPosition(x + (s * i), y).setDepth(j + 1).setData({
+                        "location": foundation[i],
+                        "originX": x + (s * i),
+                        "originY": y
+                    });
+                    if (j == foundation[i].length-1) {
+                        foundation[i][j].onTop = true;
+                    }
+                    //zones[i].getData('array').push(tableau[i][j]);
+                }
+            }
+            //return tableau;
+        }
+
+        this.renderZones = (x, y, s) => {
+            for (let i = 0; i < 4; i++) {
+                scene.add.image(x + (s * i), y, 'foundation').setScale(1,1);
+                //let zone = 
+                scene.add.zone(x + (s * i), y, 75, 100).setRectangleDropZone(70, 95).setInteractive({
                     dropZone: true
                 }).setData({
-                    "cards": 0
+                    "type": 'foundation',
+                    "array": foundation[i]
                 });
+                //this.debugZones(zone);
             }
-            */
-            
-            scene.add.image(x, y, 'foundation').setScale(1,1);
-            scene.add.image(x + s, y, 'foundation').setScale(1,1);
-            scene.add.image(x + (s * 2), y, 'foundation').setScale(1,1);
-            scene.add.image(x + (s * 3), y, 'foundation').setScale(1,1);
-            
-            scene.add.zone(x, y, 95, 70).setRectangleDropZone(95,70).setScale(1,1).setInteractive({
-                dropZone: true
-            }).setData({
-                "cards": 0
-            });
-            let f2 = scene.add.zone(x + s, y, 95, 70).setRectangleDropZone(95,70).setScale(1,1).setInteractive({
-                dropZone: true
-            }).setData({
-                "cards": 0
-            });
-            let f3 = scene.add.zone(x + (s * 2), y, 95, 70).setRectangleDropZone(95,70).setScale(1,1).setInteractive({
-                dropZone: true
-            }).setData({
-                "cards": 0
-            });
-            let f4 = scene.add.zone(x + (s * 3), y, 95, 70).setRectangleDropZone(95,70).setScale(1,1).setInteractive({
-                dropZone: true
-            }).setData({
-                "cards": 0
-            });
+        }
+
+        this.debugZones = (dropZone) => {
+            scene.add.graphics().lineStyle(4, 0xff69b4).strokeRect(dropZone.x - dropZone.input.hitArea.width / 2, dropZone.y - dropZone.input.hitArea.height / 2, dropZone.input.hitArea.width, dropZone.input.hitArea.height);
+        }
+
+        this.getFoundation = () => {
+            return this.foundation;
+        }
+
+        this.setFoundation = (foundation) => {
+            this.foundation = foundation;
         }
     }
 }

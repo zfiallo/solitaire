@@ -10,9 +10,14 @@ export default class Deck {
             let i = 0;
 
             let deckSprite = scene.add.sprite(x, y, 'deckSprites').setFrame(0).setScale(1,1).setInteractive().on('pointerdown', () => {
+
                 if(reset) {
-                    waste[i-1].setVisible(false);
                     deckSprite.setFrame(0);
+
+                    for (let j = 0; j <= waste.length-1; j++) {
+                        waste[j].setVisible(false);
+                    }
+
                     deck = waste.toReversed();
                     waste = [];
                     i = 0;
@@ -21,11 +26,20 @@ export default class Deck {
                 }
 
                 if(i > 0) {
-                    waste[i - 1].setVisible(false);
+                    if (waste[i-1] == undefined) {
+                        waste.splice(i-1, 1);
+                        i = i - 1;
+                    }
                 }
 
                 waste.push(deck.pop());
-                waste[i].setVisible(true).setPosition(330, 100);
+                scene.children.bringToTop(waste[i]);
+                waste[i].setVisible(true).setPosition(330, 100).setData({
+                    "location": waste,
+                    "originX": 330,
+                    "originY": 100
+                });
+                
                 scene.input.setDraggable(waste[i]);
                 i = i + 1; 
 
@@ -49,7 +63,7 @@ export default class Deck {
             // adds cards - spades = 1, hearts = 2, clubs = 3, diamonds = 4
             for (let s = 1; s <= 4; s++) {
                 for (let n = 1; n <= 13; n++) {
-                    deck.push(new Card(scene, s, n).render(0, 0));
+                    deck.push(new Card(scene, s, n).render(0, 0).setData({"location": deck}));
                 }
             }
 
@@ -67,7 +81,7 @@ export default class Deck {
                     deck.splice(k, 1);
                 }
             }
-            return deck;
+            //return deck;
         }
 
         this.deal = () => { 
@@ -82,12 +96,20 @@ export default class Deck {
             return tableau;
         }
 
-        //this.getDeck = () => {
-        //    return deck;
-        //}
+        this.getDeck = () => {
+            return this.deck;
+        }
 
-        //this.flipCard = (card) => {
-        //    card.setTexture('deckSprites', [2]);
-        //}
+        this.setDeck = (deck) => {
+            this.deck = deck;
+        }
+
+        this.getWaste = () => {
+            return this.waste;
+        }
+
+        this.setWaste = (waste) => {
+            this.waste = waste;
+        }
     }
 }
