@@ -52,10 +52,12 @@ export default class Game extends Phaser.Scene {
                     if (card.getData('group') != undefined) {
                         let group = card.getData('group');
                         let groupArray = group.getChildren();
-                        groupArray = groupArray.toReversed();
+                        //groupArray = groupArray.toReversed();
 
                         for (let i = 0; i <= group.getLength()-1; i++) {
-                            dropZone.getData('array').push(groupArray.pop(groupArray[i]).setData({'location': dropZone.getData('array')}));
+                            let thisCard = groupArray.at(i);
+                            dropZone.getData('array').push(thisCard);
+                            thisCard.setData({'location': dropZone.getData('array')});
                         }
                         group.clear();
                     } else {
