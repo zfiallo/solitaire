@@ -55,8 +55,11 @@ export default class Game extends Phaser.Scene {
                         groupArray = groupArray.toReversed();
 
                         for (let i = 0; i <= group.getLength()-1; i++) {
-                            dropZone.getData('array').push(groupArray.pop(groupArray[i]).setData({'location': dropZone.getData('array')}));
+                            let thisCard = groupArray[i];
+                            thisCard.setData({'location': dropZone.getData('array')});
+                            dropZone.getData('array').push(thisCard);
                         }
+
                         group.clear();
                     } else {
                         dropZone.getData('array').push(card.getData('location').pop(card));

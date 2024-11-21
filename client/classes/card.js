@@ -29,7 +29,7 @@ export default class Card {
             }).setData({
                 "suit" : suit,
                 "number": number,
-                "location": [],
+                //"location": [],
                 "color": color,
                 "originX": originX,
                 "originY": originY
