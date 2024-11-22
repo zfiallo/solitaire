@@ -5,43 +5,48 @@ export default class Deck {
         let deck = [];
         let waste = [];
         let reset = false;
+        let isEmpty = false;
 
         this.render = (x, y) => {
-            let i = 0;
 
             let deckSprite = scene.add.sprite(x, y, 'deckSprites').setFrame(0).setScale(1,1).setInteractive().on('pointerdown', () => {
 
-                if(reset) {
-                    deckSprite.setFrame(0);
-
-                    for (let j = 0; j <= waste.length-1; j++) {
-                        waste[j].setVisible(false);
-                    }
-
-                    deck = waste.toReversed();
-                    waste = [];
-                    i = 0;
-                    reset = false;
+                if(deck.length == 0 && waste.length == 0) {
+                    deckSprite.setFrame(3);
                     return;
                 }
 
-                if(i > 0) {
-                    if (waste[i-1] == undefined) {
-                        waste.splice(i-1, 1);
-                        i = i - 1;
+                if(reset) {
+                    deckSprite.setFrame(0);
+                    for (let j = 0; j <= waste.length-1; j++) {
+                        waste[j].setVisible(false);
                     }
+                    deck = waste.toReversed();
+                    waste = [];
+                    reset = false;
+                    return;
                 }
+                    /*
+                    deckSprite.setFrame(0);
+                    for (let j = 0; j <= waste.length-1; j++) {
+                        waste[j].setVisible(false);
+                    }
+                    deck = waste.toReversed();
+                    waste = [];
+                    reset = false;
+                    return;
+                    */
 
-                waste.push(deck.pop());
-                scene.children.bringToTop(waste[i]);
-                waste[i].setVisible(true).setPosition(330, 100).setData({
+                let thisCard = deck.pop();
+                scene.children.bringToTop(thisCard);
+                thisCard.setVisible(true).setPosition(330, 100).setData({
                     "location": waste,
                     "originX": 330,
                     "originY": 100
                 });
                 
-                scene.input.setDraggable(waste[i]);
-                i = i + 1; 
+                scene.input.setDraggable(thisCard);
+                waste.push(thisCard);
 
                 if (deck.length > 16) {
                     deckSprite.setFrame(0);
@@ -63,7 +68,7 @@ export default class Deck {
             // adds cards - spades = 1, hearts = 2, clubs = 3, diamonds = 4
             for (let s = 1; s <= 4; s++) {
                 for (let n = 1; n <= 13; n++) {
-                    deck.push(new Card(scene, s, n).render(0, 0).setData({"location": deck}));
+                    deck.push(new Card(scene, s, n).render(0, 0));
                 }
             }
 

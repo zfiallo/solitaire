@@ -29,7 +29,7 @@ export default class Card {
             }).setData({
                 "suit" : suit,
                 "number": number,
-                //"location": [],
+                "location": [],
                 "color": color,
                 "originX": originX,
                 "originY": originY
@@ -47,9 +47,9 @@ export default class Card {
                     for (let i = thisArray.indexOf(card); i <= thisArray.length - 1; i++) {
                         group.add(thisArray.at(i));
                         scene.children.bringToTop(thisArray.at(i));
+                        thisArray.at(i).setData({'group': group});
                     }
                     
-                    card.setData({'group': group});
                     group.setXY(dragX, dragY, 0, 20);
                     return group;
                 } else {

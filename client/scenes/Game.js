@@ -29,14 +29,13 @@ export default class Game extends Phaser.Scene {
     }
 
     update () {
-        let dropped = false;
 
         this.input.on('drop', (pointer, card, dropZone) => {
             let target = dropZone.getData('array').at(dropZone.getData('array').length - 1);
+            let dropped = false;
 
             if (dropZone.getData('type') == 'foundation') {
-                if (((dropZone.getData('array').length == 0) && (card.getData('number') == 1)) || 
-                ((dropZone.getData('array').length > 0) && (card.getData('number') == target.getData('number') + 1) && (card.getData('suit') == target.getData('suit')))) {
+                if (((dropZone.getData('array').length == 0) && (card.getData('number') == 1)) || ((dropZone.getData('array').length > 0) && (card.getData('number') == target.getData('number') + 1) && (card.getData('suit') == target.getData('suit')))) {
                     dropped = true;
                     dropZone.getData('array').push(card.getData('location').pop(card));
                     card.setData({'location': dropZone.getData('array')});
@@ -46,21 +45,21 @@ export default class Game extends Phaser.Scene {
                     this.returnCard(card);
                 }
             } else if (dropZone.getData('type') == 'tableau') {
-                if (((card.getData('number') == 13) && (dropZone.getData('array').length == 0)) || 
-                ((card.getData('number') == target.getData('number') - 1) && (target.getData('color') != card.getData('color')))) {
+                if (dropZone.getData('array').length == 0 && card.getData('number') != 13) {
+                    this.returnCard(card);
+                    return;
+                } else if (((card.getData('number') == 13) && (dropZone.getData('array').length == 0)) || ((card.getData('number') == target.getData('number') - 1) && (target.getData('color') != card.getData('color')))) {
                     dropped = true;
                     if (card.getData('group') != undefined) {
-                        let group = card.getData('group');
-                        let groupArray = group.getChildren();
-                        groupArray = groupArray.toReversed();
+                        let groupArray = card.getData('group').getChildren();
 
-                        for (let i = 0; i <= group.getLength()-1; i++) {
-                            let thisCard = groupArray[i];
-                            thisCard.setData({'location': dropZone.getData('array')});
-                            dropZone.getData('array').push(thisCard);
+                        for (let i = 0; i <= groupArray.length-1; i++) {
+                            groupArray[i].getData('location').pop();
+                            dropZone.getData('array').push(groupArray[i]);
+                            groupArray[i].setData({'location': dropZone.getData('array')});
                         }
-
-                        group.clear();
+                        
+                        card.getData('group').clear();
                     } else {
                         dropZone.getData('array').push(card.getData('location').pop(card));
                         card.setData({'location': dropZone.getData('array')});
@@ -69,7 +68,10 @@ export default class Game extends Phaser.Scene {
                 } else {
                     this.returnCard(card);
                 }
+            } else {
+                this.returnCard(card);
             }
+            return dropped;
         });
 
         this.input.on('dragend', (pointer, card, dropped) => {
@@ -79,7 +81,7 @@ export default class Game extends Phaser.Scene {
                 dropped = false;
             }
         });
-        
+
         this.returnCard = (card) => {
             if (card.getData('group') != undefined) {
                 card.getData('group').setXY(card.getData('originX'), card.getData('originY'), 0, 20);

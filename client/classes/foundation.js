@@ -22,10 +22,8 @@ export default class Foundation {
                     if (j == foundation[i].length-1) {
                         foundation[i][j].onTop = true;
                     }
-                    //zones[i].getData('array').push(tableau[i][j]);
                 }
             }
-            //return tableau;
         }
 
         this.renderZones = (x, y, s) => {
@@ -38,11 +36,11 @@ export default class Foundation {
                     "type": 'foundation',
                     "array": foundation[i]
                 });
-                //this.debugZones(zone);
+                //this.showZones(zone);
             }
         }
 
-        this.debugZones = (dropZone) => {
+        this.showZones = (dropZone) => {
             scene.add.graphics().lineStyle(4, 0xff69b4).strokeRect(dropZone.x - dropZone.input.hitArea.width / 2, dropZone.y - dropZone.input.hitArea.height / 2, dropZone.input.hitArea.width, dropZone.input.hitArea.height);
         }
 
