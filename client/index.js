@@ -13,15 +13,15 @@ const config = {
     scene: [
         Game
     ],
-    plugins: {
-        /*scene: [{
+    /*plugins: {
+        scene: [{
             key: 'rexUI',
             plugin: UIPlugin,
             mapping: 'rexUI'
         },
         // ...
-        ]*/
-    }
+        ]
+    }*/
 };
 
 const game = new Phaser.Game(config);
