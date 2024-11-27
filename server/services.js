@@ -12,13 +12,17 @@ var services = function(app) {
     app.post('/index', async function(req, res) {
     
         var data = {
+            //username: req.body.username,
+            //password: req.body.password,
+
+
 /*          bookTitle: req.body.bookTitle, 
             author: req.body.author, 
             publisher: req.body.publisher, 
             yearPublished: req.body.yearPublished, 
             isbn: req.body.isbn */
 
-            // username, password, gameSave
+            // username, password, savedGame, personalBest
         };
 
         try {
@@ -29,7 +33,7 @@ var services = function(app) {
             const db = conn.db(DBNAME);
 
             //create a collection (table) object
-            const coll = db.collection('solitaire');
+            const coll = db.collection('users');
 
             //Insert the record into the table desired
             await coll.insertOne(data);
@@ -53,7 +57,7 @@ var services = function(app) {
         try {
             const conn = await client.connect();
             const db = conn.db(DBNAME);
-            const coll = db.collection('solitaire');
+            const coll = db.collection('users');
 
             //Get data and put into an array
             const data = await coll.find().toArray();

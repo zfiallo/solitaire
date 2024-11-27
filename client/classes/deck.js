@@ -9,7 +9,7 @@ export default class Deck {
 
         this.render = (x, y) => {
 
-            let deckSprite = scene.add.sprite(x, y, 'deckSprites').setFrame(0).setScale(1,1).setInteractive().on('pointerdown', () => {
+            let deckSprite = scene.add.sprite(x, y, 'deckSprites').setFrame(0).setScale(1, 1).setInteractive().on('pointerdown', () => {
 
                 if(deck.length == 0 && waste.length == 0) {
                     deckSprite.setFrame(3);
@@ -26,23 +26,19 @@ export default class Deck {
                     reset = false;
                     return;
                 }
-                    /*
-                    deckSprite.setFrame(0);
-                    for (let j = 0; j <= waste.length-1; j++) {
-                        waste[j].setVisible(false);
-                    }
-                    deck = waste.toReversed();
-                    waste = [];
-                    reset = false;
-                    return;
-                    */
-
+                
                 let thisCard = deck.pop();
                 scene.children.bringToTop(thisCard);
-                thisCard.setVisible(true).setPosition(330, 100).setData({
+                /*thisCard.setVisible(true).setPosition(330, 100).setData({
                     "location": waste,
                     "originX": 330,
                     "originY": 100
+                });*/
+
+                thisCard.setVisible(true).setPosition(359, 70).setData({
+                    "location": waste,
+                    "originX": 359,
+                    "originY": 70
                 });
                 
                 scene.input.setDraggable(thisCard);

@@ -2,11 +2,9 @@ export default class Foundation {
     constructor(scene) {
         let foundation = [[], [], [], []];
 
-        this.render = (x, y) => {
-            let s = 80;     // horizontal spacing
-            
-            this.renderZones(x, y, s);
+        this.render = (x, y, s) => {
 
+            this.renderZones(x, y, s);
 
         }
 
@@ -24,6 +22,7 @@ export default class Foundation {
                     }
                 }
             }
+            this.setFoundation(foundation);
         }
 
         this.renderZones = (x, y, s) => {

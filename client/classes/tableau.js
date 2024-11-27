@@ -1,15 +1,10 @@
 export default class Tableau {
     constructor(scene, tableau) {
 
-        this.render = (x, y) => {
-            let h = 90;     // horizonal spacing
-            let v = 20;     // vertical spacing     
-            // card height = 95, width = 70
+        this.render = (x, y, h, v) => {
             
             this.renderZones(x, y, h, v);
-
             this.renderDealtCards();
-
             this.update(x, y, h, v);
 
             return tableau;
@@ -46,6 +41,7 @@ export default class Tableau {
                     }
                 }
             }
+            this.setTableau(tableau);
         }
 
         this.renderDealtCards = () => {

@@ -24,12 +24,12 @@ export default class Card {
             let originX = x;
             let originY = y;
 
-            let card = scene.add.sprite(x, y, 'cardSprites').setFrame(frame).setVisible(false).setInteractive({
+            let card = scene.add.sprite(x, y, 'cardSprites').setFrame(frame).setVisible(false).setScale(1, 1).setInteractive({
                 draggable: false
             }).setData({
                 "suit" : suit,
                 "number": number,
-                "location": [],
+                "location": undefined,
                 "color": color,
                 "originX": originX,
                 "originY": originY
