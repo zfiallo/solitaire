@@ -64,7 +64,8 @@ export default class Menu extends Phaser.Scene {
             },
         }).on('button.click', function(button, index, pointer, event) {
             if(index == 0) {
-                
+                this.scene.start('Game');
+
                 //if(childrenKey == 1) {
                     //sub.setVisible(true);
                     console.log('a');

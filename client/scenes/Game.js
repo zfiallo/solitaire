@@ -47,6 +47,8 @@ export default class Game extends Phaser.Scene {
         this.Foundation = new Foundation(this);
         this.Foundation.render(foundationX, foundationY, horizonalSpacing);
 
+        this.scene.start('Menu');
+        this.scene.moveUp('Menu');
         //this.Menu = new Menu(this);
         //this.Menu.render(0, 0);
 
@@ -149,6 +151,7 @@ export default class Game extends Phaser.Scene {
     update () {
        this.timer();
        //this.Menu.render(0, 0);
+       //this.scene.launch('Menu');
        //this.scene.launch('Menu');
     }
 }

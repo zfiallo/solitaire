@@ -12,9 +12,9 @@ const config = {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     scene: [
-        Game,
+        //Game,
         Menu,
-        //Game
+        Game
     ],
     /*plugins: {
         scene: [{
