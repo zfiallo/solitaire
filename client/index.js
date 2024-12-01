@@ -1,4 +1,5 @@
 import Game from "./scenes/Game.js";
+import Menu from './scenes/Menu.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -11,7 +12,9 @@ const config = {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     scene: [
-        Game
+        Game,
+        Menu,
+        //Game
     ],
     plugins: {
         /*scene: [{

@@ -24,8 +24,9 @@ export default class Menu {
                 y: y,
                 //anchor: top,
                 orientation: x,
+                //subMenuSide: 2,
                 items: [
-                    {name: 'Game', 
+                    {name: 'Game',
                         children: [
                             {name: 'Deal'}, 
                             {name: 'Undo'}, 
@@ -44,12 +45,66 @@ export default class Menu {
                     return scene.rexUI.add.roundRectangle(x, y, 2050, 50, 0, 0xFFFFFF);
                 },
                 createButtonCallback: function (item, i, items) {
+                    //if(item.name == 'Game') {
+                    //    this.setOrientation(y);
+                    //}
+
                     if(item.name == 'Leaderboard') {
-                        x = 1024;
+                        x = 1824;
                     }
 
                     return scene.rexUI.add.label({
-                        background: scene.rexUI.add.roundRectangle(x, y, 2050, 50),
+                        text: scene.add.text(x, y, item.name, {
+                            fontSize: '15px',
+                            color: '0x000000'
+                        }),
+                        space: {
+                            left: 5,
+                            right: 5,
+                            top: 5,
+                            bottom: 5,
+                        }
+                    });
+                },
+            }).on('button.click', function(button, index, pointer, event) {
+                if(index == 0) {
+                    
+                    //if(childrenKey == 1) {
+                        //sub.setVisible(true);
+                        console.log('a');
+                   // }
+                } else if ((index == 1)) {
+                    menu.collapseSubMenu();
+                    //sub.setVisible(true);
+                } else if ((index == 2)) {
+                    menu.collapseSubMenu();
+                    //sub.setVisible(true);
+                }
+            });
+            //menu.setOrientation(y);
+            //subMenu.setOrientation(y); 
+            
+            /*let sub = scene.rexUI.add.menu({
+                x: x,
+                y: y,
+                //anchor: top,
+                orientation: y,
+                //subMenuSide: 2,
+                items: [
+                    {name: 'Deal'}, 
+                    {name: 'Undo'}, 
+                    {name: 'Deck'}, 
+                    {name: 'Options'}, 
+                    {name: 'Sign Up'}, 
+                    {name: 'Log In'}
+                ],
+
+                createBackgroundCallback: function (items) {
+                    let scene = items.scene;
+                    return scene.rexUI.add.roundRectangle(x, y, 2050, 50, 0, 0xFFFFFF);
+                },
+                createButtonCallback: function (item, i, items) {
+                    return scene.rexUI.add.label({
                         text: scene.add.text(x, y, item.name, {
                             fontSize: '15px',
                             color: '0x000000'
@@ -62,13 +117,9 @@ export default class Menu {
                         }
                     })
                 },
-
-            });
-    
-            menu.on('button.click', function(button, index, pointer, event) {
-                console.log(button.text);
-            });
-
+                
+            }).setVisible(false);*/
+            
             /*
             //let game = scene.add.text(x + 5, y + 1, 'Game');
             //let help = scene.add.text(x + 55, y + 1, 'Help');
@@ -88,6 +139,8 @@ export default class Menu {
                 background: this.rexUI.add.roundRectangle(x, y, 1024, 30, 0, '#FFFFFF'),
             });
             */
+
+            //scene.children.bringToTop(this.Menu);
         }
 
     }

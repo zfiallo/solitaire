@@ -1,17 +1,20 @@
 import Deck from '../classes/deck.js';
 import Foundation from '../classes/foundation.js';
 import Tableau from '../classes/tableau.js';
-import Menu from '../classes/menu.js';
+//import Menu from '../classes/menu.js';
 
 // card height = 95, width = 70
 
 export default class Game extends Phaser.Scene {
     constructor () {
-        super('Game');
+        super({ 
+            key: 'Game', 
+            //active: true
+        });
     }
     
     preload () {
-        this.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
+        //this.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
         this.load.spritesheet('cardSprites', "/client/assets/cardSprites.png", {frameHeight: 96, frameWidth : 71, endFrame: 51});
         this.load.spritesheet('deckSprites', "/client/assets/deckSprites.png", {frameHeight: 98, frameWidth : 75, endFrame: 3});
         this.load.image('foundation', '/client/assets/foundation.png');
@@ -44,8 +47,8 @@ export default class Game extends Phaser.Scene {
         this.Foundation = new Foundation(this);
         this.Foundation.render(foundationX, foundationY, horizonalSpacing);
 
-        this.Menu = new Menu(this);
-        this.Menu.render(0, 0);
+        //this.Menu = new Menu(this);
+        //this.Menu.render(0, 0);
 
         this.input.on('drop', (pointer, card, dropZone) => {
             let target = dropZone.getData('array').at(dropZone.getData('array').length - 1);
@@ -146,5 +149,6 @@ export default class Game extends Phaser.Scene {
     update () {
        this.timer();
        //this.Menu.render(0, 0);
+       //this.scene.launch('Menu');
     }
 }

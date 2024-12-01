@@ -8,12 +8,12 @@ const dbURL = process.env.DB_URI || "mongodb://127.0.0.1";
 //Define the database server
 const client = new MongoClient(dbURL);
 
-var services = function(app) {
+let services = function(app) {
     app.post('/index', async function(req, res) {
     
-        var data = {
-            //username: req.body.username,
-            //password: req.body.password,
+        let data = {
+            username: req.body.username,
+            password: req.body.password,
 
 
 /*          bookTitle: req.body.bookTitle, 

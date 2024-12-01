@@ -16,16 +16,16 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use("/client", express.static(path.resolve(__dirname + "/../client/")));
 
 //make the server
-var server;
-var port = process.env.PORT || process.env.NODE_PORT || 5000;
+let server;
+let port = process.env.PORT || process.env.NODE_PORT || 5000;
 
 //Page listeners
-var router = require("./router.js");
+let router = require("./router.js");
 router(app);
 
 
 //Service listeners - Mongo
-var services = require("./services.js");
+let services = require("./services.js");
 services(app);
 
 
