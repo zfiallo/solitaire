@@ -11,8 +11,8 @@ export class Signup extends Phaser.Scene {
         var print = this.add.text(0, 0, '').setDepth(1);
 
         var style = {
-            x: 960, 
-            y: 460,
+            x: (window.innerWidth / 2), //960, 
+            y: (window.innerHeight / 2),
 
             space: {
                 left: 20, right: 20, top: 20, bottom: 20,

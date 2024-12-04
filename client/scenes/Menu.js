@@ -16,7 +16,7 @@ export class Menu extends Phaser.Scene {
         let y = 0;
 
         let blankSpace = '                                                                                     ';
-        //'                                                                                                                                   ';
+        //let blankSpace = '                                                                                                                                   ';
 
         let menuConfig = {
             x: 0,
