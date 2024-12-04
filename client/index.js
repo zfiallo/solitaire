@@ -3,6 +3,7 @@ import { Menu } from './scenes/Menu.js';
 import { Game } from './scenes/Game.js';
 import { Leaderboard } from './scenes/Leaderboard.js'
 import { Signup } from './scenes/Signup.js'
+import { Login } from './scenes/Login.js'
 
 const config = {
     type: Phaser.AUTO,
@@ -23,7 +24,8 @@ const config = {
         Menu,
         Game,
         Leaderboard,
-        Signup
+        Signup,
+        Login
     ]
 };
 

@@ -6,6 +6,7 @@ export class Leaderboard extends Phaser.Scene {
     preload () {
         this.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
         this.load.plugin('rexgridtableplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexgridtableplugin.min.js', true);
+        this.load.plugin('rexsliderplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexsliderplugin.min.js', true);
     }
 
     create () {
@@ -20,17 +21,18 @@ export class Leaderboard extends Phaser.Scene {
             cell.setContainer(newCellObject(this, cell));
             //console.log('Cell ' + cell.index + ' visible');
         };
-        var table = this.add.rexGridTable(400, 300, 250, 400, {
+
+        var table = this.add.rexGridTable((window.innerWidth / 2), (window.innerHeight / 2), 600, 700, {
             cellWidth: 240,
             cellHeight: 100,
             cellsCount: 100,
-            columns: 1,
+            columns: 3,
             cellVisibleCallback: onCellVisible.bind(this),
             clamplTableOXY: false
         });
 
         // draw bound
-        this.add.graphics().lineStyle(3, 0xff0000).strokeRectShape(table.getBounds());
+        this.add.graphics().lineStyle(3, 0x000000).strokeRectShape(table.getBounds());
 
         // drag table content
         /*table.scroller = this.plugins.get('rexscrollerplugin').add(table, {
@@ -47,7 +49,7 @@ export class Leaderboard extends Phaser.Scene {
         // drag table content
         var topRight = table.getTopRight();
         var bottomRight = table.getBottomRight();
-        var thumb = this.add.image(0, 0, 'dot').setScale(4, 4);
+        var thumb = this.add.rectangle(0, 0, 20, 20, 0x000000);
         thumb.slider = this.plugins.get('rexsliderplugin').add(thumb, {
             endPoints: [{
                     x: topRight.x + 10,
@@ -60,14 +62,16 @@ export class Leaderboard extends Phaser.Scene {
             ]
         });
 
-        this.add.graphics().lineStyle(3, 0x55ff55, 1).strokePoints(thumb.slider.endPoints);
-
+        this.add.graphics().lineStyle(3, 0x000000, 1).strokePoints(thumb.slider.endPoints);
+        //this.add.graphics().lineStyle(3, 0x000000).strokeRectShape(table.tableWidth + 20, table.tableHeight, 20, 20);
+        
         // 'valuechange' event
         /*table.scroller.on('valuechange', function (newValue) {
             table.setTableOY(newValue).updateTable();
             // reflect to slider
             thumb.slider.setValue(table.getTableOYPercentage());
         });*/
+        
         thumb.slider.on('valuechange', function (newValue) {
             table.setTableOYByPercentage(newValue).updateTable();
             // reflect to scroller

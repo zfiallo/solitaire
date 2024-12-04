@@ -1,8 +1,8 @@
-export class Signup extends Phaser.Scene {
+export class Login extends Phaser.Scene {
     constructor () {
-        super('Signup');
+        super('Login');
     }
-
+    
     init (data) {
         this.exists = false;
     }
@@ -13,8 +13,6 @@ export class Signup extends Phaser.Scene {
     }
 
     create () {
-        var print = this.add.text(0, 0, '').setDepth(1);
-
         var style = {
             x: (window.innerWidth / 2),
             y: (window.innerHeight / 2),
@@ -61,6 +59,7 @@ export class Signup extends Phaser.Scene {
             },
             modal: {
                 touchOutsideClose: true,
+                //manualClose: true,
                 duration: {
                     in: 0,
                     out: 0
@@ -69,16 +68,14 @@ export class Signup extends Phaser.Scene {
         }
 
         var popup = this.rexUI.add.nameInputDialog(style).resetDisplayContent({
-            title: 'Sign Up',
+            title: 'Log In',
             firstNameTitle: 'username: ',
             lastNameTitle: 'password: ',
             button: 'Enter'
         }).layout().modalPromise().then(function (data) {
             var username = data.firstName;
             var password = data.lastName;
-    
-            var jsonString = {username: username, password: password};
-            
+
             $.ajax({
                 url: libraryURL + "/data",
                 type: "get",
@@ -87,25 +84,17 @@ export class Signup extends Phaser.Scene {
                     var usersTable = responseData.game;
 
                     for(let i = 0; i < usersTable.length; i++) {
-                        if (usersTable[i].username == data.firstName) {
+                        if (usersTable[i].username == data.firstName && usersTable[i].password == data.lastName) {
                             this.exists = true;
                         }
                     }
 
                     if (this.exists) {
-                        alert('Sign up failed - username already in use');
+                        alert('Log in successful');
+                        //modal.requestClose();
                     } else {
-                        $.ajax({
-                            url: libraryURL + "/index",
-                            type: "post",
-                            data: jsonString,
-                            success: function(response){
-                                alert('Sign up successful');
-                            },
-                            error: function(err){
-                                alert(err);
-                            }
-                        });
+                        alert('Log in failed');
+                        //scene.scene.restart('Login');
                     }
                 },
                 error: function(err){
@@ -114,9 +103,6 @@ export class Signup extends Phaser.Scene {
             });
         });
 
-        //this.getSuccess = () => {
-        //    return this.success;
-        //}
     }
 
     update () {

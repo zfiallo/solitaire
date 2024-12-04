@@ -52,7 +52,7 @@ let services = function(app) {
         }
     });
 
-    app.get('/index', async function(req, res) {
+    app.get('/data', async function(req, res) {
         
         try {
             const conn = await client.connect();

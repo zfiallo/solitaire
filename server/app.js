@@ -23,11 +23,9 @@ let port = process.env.PORT || process.env.NODE_PORT || 5000;
 let router = require("./router.js");
 router(app);
 
-
 //Service listeners - Mongo
 let services = require("./services.js");
 services(app);
-
 
 //listen
 server = app.listen(port, function(err) {

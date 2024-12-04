@@ -32,21 +32,21 @@ export class Game extends Phaser.Scene {
         };
         */
 
-        let deckX = (window.innerWidth / 2 ) - 255;   //(window.innerWidth / 2 ) - 273;     //705; //274;   
-        let deckY = (window.innerHeight / 5);           //120;    //170;
-        let tableauX = deckX - 2; //(window.innerWidth / 2 ) - 275;  //703; //(window.outerWidth / 2 ) - 275; //672;         // was 243
-        let tableauY = deckY + 110;         // was 230
-        let foundationX = deckX + 238;                          //943; //512;      // was 543
-        let textX = window.innerWidth - 300;            // was 780
-        let textY = window.innerHeight - 50;            // was 748
-        let horizonalSpacing = 80;  // was 90
+        let deckX = (window.innerWidth / 2 ) - 255;
+        let deckY = (window.innerHeight / 5);
+        let tableauX = deckX - 2;
+        let tableauY = deckY + 110; 
+        let foundationX = deckX + 238; 
+        let textX = window.innerWidth - 370; 
+        let textY = window.innerHeight - 50; 
+        let horizonalSpacing = 80;
         let verticalSpacing = 20;
 
         let moves = 0;
         let gameOver = false;
 
-        this.scoreText = this.add.text(textX, textY, 'Score: ' + moves);
-        this.timeText = this.add.text(textX + 110, textY);
+        this.scoreText = this.add.text(textX, textY, 'Score: ' + moves, { fontSize: 24 });
+        this.timeText = this.add.text(textX + 160, textY, '', { fontSize: 24 });
 
         this.Deck = new Deck(this);
         //this.loadFile();
@@ -120,10 +120,30 @@ export class Game extends Phaser.Scene {
             if (j == 4) {
                 gameOver = true;
 
-                console.log(gameOver);
-                console.log(this.timer());
-                console.log(moves);
                 this.scene.pause('Game');
+                /*
+                this.scoreText = this.add.text(0, 40, 'Submit Score').on('pointerdown', () => {
+                    var username = data.firstName;
+                    var time = this.timer();
+                    var score = moves;
+    
+                    var jsonString = {username: username, time: time, score: score};
+            
+                    $.ajax({
+                        url: libraryURL + "/index",
+                        type:"post",
+                        data: jsonString,
+                        success: function(response){
+                            var test1 = "";
+                            alert(response);
+                        },
+                        error: function(err){
+                            var test2 = "";
+                            alert(err);
+                        }
+                    });
+                });
+                */
             }
         }
 

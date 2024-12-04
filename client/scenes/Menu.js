@@ -19,8 +19,8 @@ export class Menu extends Phaser.Scene {
         //let blankSpace = '                                                                                                                                   ';
 
         let menuConfig = {
-            x: 0,
-            y: 0,
+            x: x,
+            y: y,
             orientation: 0,
             pointerDownOutsideCollapsing: false,
             items: [
@@ -32,7 +32,7 @@ export class Menu extends Phaser.Scene {
             background: scene.rexUI.add.roundRectangle(x, y, window.outerWidth * 2, 80, 0, 0xFFFFFF),
             createBackgroundCallback: function (items) {
                 let scene = items.scene;
-                return scene.rexUI.add.roundRectangle(x, y, window.outerWidth * 2, 80, 0, 0xFFFFFF);
+                return scene.rexUI.add.roundRectangle(x, y, 2, 2, 0, 0xFFFFFF);
             },
             createButtonCallback: function (item, i, items) {
                 return scene.rexUI.add.label({
@@ -62,10 +62,10 @@ export class Menu extends Phaser.Scene {
                 {name: 'Sign Up'}, 
                 {name: 'Log In'}
             ],
-            background: scene.rexUI.add.roundRectangle(x, y, window.outerWidth * 2, 80, 0, 0xFFFFFF),
+            background: scene.rexUI.add.roundRectangle(x, y, 2, 2, 0, 0xFFFFFF),
             createBackgroundCallback: function (items) {
                 let scene = items.scene;
-                return scene.rexUI.add.roundRectangle(x, y, window.outerWidth * 2, 80, 0, 0xFFFFFF);
+                return scene.rexUI.add.roundRectangle(x, y, 2, 2, 0, 0xFFFFFF);
             },
             createButtonCallback: function (item, i, items) {
                 return scene.rexUI.add.label({
@@ -100,17 +100,18 @@ export class Menu extends Phaser.Scene {
                         scene.scene.pause('Game');
                         scene.scene.start('Signup');
                         scene.scene.moveAbove('Signup', 'Menu');
+                        //console.log(scene.Signup.getSuccess());
                     } else if (button.text == 'Log In') {
-                        //scene.scene.pause('Game');
-                        //scene.scene.start('Login');
-                        //scene.scene.moveAbove('Login', 'Menu');
+                        scene.scene.pause('Game');
+                        scene.scene.start('Login');
+                        scene.scene.moveAbove('Login', 'Menu');
+                        //console.log(scene.scene.Login.getSuccess());
                     }
                     scene.scene.restart('Menu');
                     subMenu.collapse();
                 });
             }else if (button.text == blankSpace) {
                 scene.scene.sleep('Leaderboard');
-                scene.scene.sleep('Signup');
                 scene.scene.wake('Game');
             } else if (button.text == 'Help') {
 

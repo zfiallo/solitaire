@@ -31,10 +31,10 @@ export default class Deck {
                 let thisCard = this.deck.pop();
                 scene.children.bringToTop(thisCard);
 
-                thisCard.setVisible(true).setPosition(765, 170).setData({
+                thisCard.setVisible(true).setPosition(((window.innerWidth / 2 ) - 255) + 78, window.innerHeight / 5).setData({
                     "location": waste,
-                    "originX": 765, //783,
-                    "originY": 170
+                    "originX": ((window.innerWidth / 2 ) - 255) + 78,
+                    "originY": window.innerHeight / 5,
                 });
                 
                 scene.input.setDraggable(thisCard);
