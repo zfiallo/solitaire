@@ -33,7 +33,7 @@ export class Game extends Phaser.Scene {
         */
 
         let deckX = (window.innerWidth / 2 ) - 273;     //705; //274;            // was 243, deckY = foundationY
-        let deckY = 170;
+        let deckY = 120;//170;
         let tableauX = deckX - 2; //(window.innerWidth / 2 ) - 275;  //703; //(window.outerWidth / 2 ) - 275; //672;         // was 243
         let tableauY = deckY + 110;         // was 230
         let foundationX = deckX + 238;                          //943; //512;      // was 543
@@ -41,7 +41,7 @@ export class Game extends Phaser.Scene {
         let textY = window.innerHeight - 50;            // was 748
         let horizonalSpacing = 80;  // was 90
         let verticalSpacing = 20;
-        console.log(window.innerWidth);
+
         let moves = 0;
         let gameOver = false;
 
