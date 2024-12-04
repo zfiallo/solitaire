@@ -1,6 +1,6 @@
 export default class Tableau {
     constructor(scene, tableau) {
-
+        this.tableau = tableau;
         this.render = (x, y, h, v) => {
             
             this.renderZones(x, y, h, v);

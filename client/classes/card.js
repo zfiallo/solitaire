@@ -1,11 +1,10 @@
 export default class Card {
     constructor(scene, suit, number) {
-        let frame;
         let isFlipped = false;
         let onTop = false;
+        let frame;
         let color;
 
-        // Determines spritesheet frame and suit color
         if (suit == 1) {
             frame = number - 1;
             color = 1;

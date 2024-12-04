@@ -1,33 +1,44 @@
 import Deck from '../classes/deck.js';
 import Foundation from '../classes/foundation.js';
 import Tableau from '../classes/tableau.js';
-//import Menu from '../classes/menu.js';
 
-// card height = 95, width = 70
-
-export default class Game extends Phaser.Scene {
+export class Game extends Phaser.Scene {
     constructor () {
-        super({ 
-            key: 'Game', 
-            //active: true
-        });
+        super('Game');
     }
     
     preload () {
-        //this.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
         this.load.spritesheet('cardSprites', "/client/assets/cardSprites.png", {frameHeight: 96, frameWidth : 71, endFrame: 51});
         this.load.spritesheet('deckSprites', "/client/assets/deckSprites.png", {frameHeight: 98, frameWidth : 75, endFrame: 3});
         this.load.image('foundation', '/client/assets/foundation.png');
     }
 
     create () {
-        let deckX = 274;            // was 243, deckY = foundationY
-        let tableauX = 272;         // was 243
-        let tableauY = 180;         // was 230
-        let foundationX = 512;      // was 543
-        let foundationY = 70;       // was 100
-        let textX = 798;            // was 780
-        let textY = 465;            // was 748
+        // for demo script get winnable game then save game scene file for script
+        // get deck, deck error on .setDraggable, try game for saving game
+        /*
+        this.saveFile = () => {
+            var file = {
+                deck: this.Deck.getDeck(),
+                //tableau: this.Tableau.getTableau()
+            };
+            localStorage.setItem('saveFile',JSON.stringify(file));
+        };
+        
+        this.loadFile = () => {
+            var file = JSON.parse(localStorage.getItem('saveFile'));
+            this.Deck.setDeck(file.deck);
+            //this.Tableau.setTableau(file.tableau);
+        };
+        */
+
+        let deckX = 705; //274;            // was 243, deckY = foundationY
+        let tableauX = 703; //(window.outerWidth / 2 ) - 275; //672;         // was 243
+        let tableauY = 280;         // was 230
+        let foundationX = 943; //512;      // was 543
+        let foundationY = 170;       // was 100
+        let textX = window.innerWidth - 300;            // was 780
+        let textY = window.innerHeight - 50;            // was 748
         let horizonalSpacing = 80;  // was 90
         let verticalSpacing = 20;
 
@@ -38,7 +49,10 @@ export default class Game extends Phaser.Scene {
         this.timeText = this.add.text(textX + 110, textY);
 
         this.Deck = new Deck(this);
+        //this.loadFile();
         this.Deck.createDeck();
+        //localStorage.clear();
+        //this.saveFile();
         this.Deck.render(deckX, foundationY);
 
         this.Tableau = new Tableau(this, this.Deck.deal());
@@ -46,11 +60,6 @@ export default class Game extends Phaser.Scene {
 
         this.Foundation = new Foundation(this);
         this.Foundation.render(foundationX, foundationY, horizonalSpacing);
-
-        this.scene.start('Menu');
-        this.scene.moveUp('Menu');
-        //this.Menu = new Menu(this);
-        //this.Menu.render(0, 0);
 
         this.input.on('drop', (pointer, card, dropZone) => {
             let target = dropZone.getData('array').at(dropZone.getData('array').length - 1);
@@ -150,8 +159,5 @@ export default class Game extends Phaser.Scene {
 
     update () {
        this.timer();
-       //this.Menu.render(0, 0);
-       //this.scene.launch('Menu');
-       //this.scene.launch('Menu');
     }
 }
