@@ -22,7 +22,7 @@ export class Leaderboard extends Phaser.Scene {
             //console.log('Cell ' + cell.index + ' visible');
         };
 
-        var table = this.add.rexGridTable((window.innerWidth / 2), (window.innerHeight / 2), 600, 700, {
+        var table = this.add.rexGridTable((window.innerWidth / 2), (window.innerHeight / 2), 400, 500, {
             cellWidth: 240,
             cellHeight: 100,
             cellsCount: 100,
