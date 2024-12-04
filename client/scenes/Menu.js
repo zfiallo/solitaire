@@ -100,7 +100,9 @@ export class Menu extends Phaser.Scene {
                         scene.scene.start('Signup');
                         scene.scene.moveAbove('Signup', 'Menu');
                     } else if (button.text == 'Log In') {
-                        
+                        //scene.scene.pause('Game');
+                        //scene.scene.start('Login');
+                        //scene.scene.moveAbove('Login', 'Menu');
                     }
                     scene.scene.restart('Menu');
                     subMenu.collapse();

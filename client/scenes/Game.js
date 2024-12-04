@@ -32,16 +32,16 @@ export class Game extends Phaser.Scene {
         };
         */
 
-        let deckX = 705; //274;            // was 243, deckY = foundationY
-        let tableauX = 703; //(window.outerWidth / 2 ) - 275; //672;         // was 243
-        let tableauY = 280;         // was 230
-        let foundationX = 943; //512;      // was 543
-        let foundationY = 170;       // was 100
+        let deckX = (window.innerWidth / 2 ) - 273;     //705; //274;            // was 243, deckY = foundationY
+        let deckY = 170;
+        let tableauX = deckX - 2; //(window.innerWidth / 2 ) - 275;  //703; //(window.outerWidth / 2 ) - 275; //672;         // was 243
+        let tableauY = deckY + 110;         // was 230
+        let foundationX = deckX + 238;                          //943; //512;      // was 543
         let textX = window.innerWidth - 300;            // was 780
         let textY = window.innerHeight - 50;            // was 748
         let horizonalSpacing = 80;  // was 90
         let verticalSpacing = 20;
-
+        console.log(window.innerWidth);
         let moves = 0;
         let gameOver = false;
 
@@ -53,13 +53,13 @@ export class Game extends Phaser.Scene {
         this.Deck.createDeck();
         //localStorage.clear();
         //this.saveFile();
-        this.Deck.render(deckX, foundationY);
+        this.Deck.render(deckX, deckY);
 
         this.Tableau = new Tableau(this, this.Deck.deal());
         this.Tableau.render(tableauX, tableauY, horizonalSpacing, verticalSpacing);
 
         this.Foundation = new Foundation(this);
-        this.Foundation.render(foundationX, foundationY, horizonalSpacing);
+        this.Foundation.render(foundationX, deckY, horizonalSpacing);
 
         this.input.on('drop', (pointer, card, dropZone) => {
             let target = dropZone.getData('array').at(dropZone.getData('array').length - 1);
@@ -101,7 +101,7 @@ export class Game extends Phaser.Scene {
             }
 
             this.Tableau.update(tableauX, tableauY, horizonalSpacing, verticalSpacing);
-            this.Foundation.update(foundationX, foundationY, horizonalSpacing);
+            this.Foundation.update(foundationX, deckY, horizonalSpacing);
             this.winConditions();
         });
 

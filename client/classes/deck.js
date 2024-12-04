@@ -28,12 +28,12 @@ export default class Deck {
                     return;
                 }
                 
-                let thisCard = deck.pop();
+                let thisCard = this.deck.pop();
                 scene.children.bringToTop(thisCard);
 
-                thisCard.setVisible(true).setPosition(783, 170).setData({
+                thisCard.setVisible(true).setPosition(765, 170).setData({
                     "location": waste,
-                    "originX": 783,
+                    "originX": 765, //783,
                     "originY": 170
                 });
                 
