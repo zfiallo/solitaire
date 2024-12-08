@@ -1,1 +1,1 @@
-var libraryURL = 'http://localhost:5000';
+let libraryURL = 'http://localhost:5000';

@@ -13,7 +13,9 @@ export class Login extends Phaser.Scene {
     }
 
     create () {
-        var style = {
+        let userID;
+
+        let style = {
             x: (window.innerWidth / 2),
             y: (window.innerHeight / 2),
             space: {
@@ -60,31 +62,29 @@ export class Login extends Phaser.Scene {
             modal: {
                 touchOutsideClose: true,
                 //manualClose: true,
-                duration: {
-                    in: 0,
-                    out: 0
-                }
+                //duration: {
+                //    in: 0,
+                //    out: 0
+                //}
             }
         }
 
-        var popup = this.rexUI.add.nameInputDialog(style).resetDisplayContent({
+        this.rexUI.add.nameInputDialog(style).resetDisplayContent({
             title: 'Log In',
             firstNameTitle: 'username: ',
             lastNameTitle: 'password: ',
             button: 'Enter'
         }).layout().modalPromise().then(function (data) {
-            var username = data.firstName;
-            var password = data.lastName;
-
             $.ajax({
-                url: libraryURL + "/data",
+                url: libraryURL + "/users",
                 type: "get",
                 success: function(response){
-                    var responseData = JSON.parse(response);
-                    var usersTable = responseData.game;
+                    let responseData = JSON.parse(response);
+                    let usersTable = responseData.game;
 
-                    for(let i = 0; i < usersTable.length; i++) {
-                        if (usersTable[i].username == data.firstName && usersTable[i].password == data.lastName) {
+                    for(let i of usersTable) {
+                        if (i.username == data.firstName && i.password == data.lastName) {
+                            userID = i._id;
                             this.exists = true;
                         }
                     }

@@ -44,7 +44,25 @@ export class Game extends Phaser.Scene {
 
         let moves = 0;
         let gameOver = false;
-
+        this.add.text(200, 200, 'S', { fontSize: 24, textColor: 0x000000 }).setInteractive().on('pointerdown', () => {
+            var username = 'username2';
+            var time = 'time2';
+            var score = 'moves2';
+    
+            var jsonString = { username: username, time: time, score: score };
+            
+            $.ajax({
+                url: libraryURL + "/leaderboard",
+                type:"post",
+                data: jsonString,
+                success: function(response){
+                    alert(response);
+                },
+                error: function(err){
+                    alert(err);
+                }
+            });
+        });
         this.scoreText = this.add.text(textX, textY, 'Score: ' + moves, { fontSize: 24 });
         this.timeText = this.add.text(textX + 160, textY, '', { fontSize: 24 });
 
@@ -122,7 +140,7 @@ export class Game extends Phaser.Scene {
 
                 this.scene.pause('Game');
                 /*
-                this.scoreText = this.add.text(0, 40, 'Submit Score').on('pointerdown', () => {
+                this.scoreText = this.add.text(0, 40, 'Submit Score').setInteractive().on('pointerdown', () => {
                     var username = data.firstName;
                     var time = this.timer();
                     var score = moves;
