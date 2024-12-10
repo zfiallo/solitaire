@@ -1,14 +1,14 @@
 import { Preloader } from './scenes/Preloader.js';
 import { Menu } from './scenes/Menu.js';
 import { Game } from './scenes/Game.js';
-import { Leaderboard } from './scenes/Leaderboard.js'
-import { Signup } from './scenes/Signup.js'
-import { Login } from './scenes/Login.js'
+import { Leaderboard } from './scenes/Leaderboard.js';
+import { Signup } from './scenes/Signup.js';
+import { Login } from './scenes/Login.js';
 
 const config = {
     type: Phaser.AUTO,
-    width: window.innerWidth, //1024,
-    height: window.innerHeight - 20, //485,    // was 768
+    width: window.innerWidth, 
+    height: window.innerHeight - 20, 
     parent: 'game-container',
     max: {
         width: window.innerWidth,

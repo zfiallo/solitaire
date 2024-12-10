@@ -6,7 +6,7 @@ export class Game extends Phaser.Scene {
     constructor () {
         super('Game');
     }
-    
+
     preload () {
         this.load.spritesheet('cardSprites', "/client/assets/cardSprites.png", {frameHeight: 96, frameWidth : 71, endFrame: 51});
         this.load.spritesheet('deckSprites', "/client/assets/deckSprites.png", {frameHeight: 98, frameWidth : 75, endFrame: 3});
@@ -14,23 +14,7 @@ export class Game extends Phaser.Scene {
     }
 
     create () {
-        // for demo script get winnable game then save game scene file for script
-        // get deck, deck error on .setDraggable, try game for saving game
-        /*
-        this.saveFile = () => {
-            var file = {
-                deck: this.Deck.getDeck(),
-                //tableau: this.Tableau.getTableau()
-            };
-            localStorage.setItem('saveFile',JSON.stringify(file));
-        };
-        
-        this.loadFile = () => {
-            var file = JSON.parse(localStorage.getItem('saveFile'));
-            this.Deck.setDeck(file.deck);
-            //this.Tableau.setTableau(file.tableau);
-        };
-        */
+        this.gameOver = false;
 
         let deckX = (window.innerWidth / 2 ) - 255;
         let deckY = (window.innerHeight / 5);
@@ -41,36 +25,14 @@ export class Game extends Phaser.Scene {
         let textY = window.innerHeight - 50; 
         let horizonalSpacing = 80;
         let verticalSpacing = 20;
-
         let moves = 0;
-        let gameOver = false;
-        this.add.text(200, 200, 'S', { fontSize: 24, textColor: 0x000000 }).setInteractive().on('pointerdown', () => {
-            var username = 'username2';
-            var time = 'time2';
-            var score = 'moves2';
-    
-            var jsonString = { username: username, time: time, score: score };
-            
-            $.ajax({
-                url: libraryURL + "/leaderboard",
-                type:"post",
-                data: jsonString,
-                success: function(response){
-                    alert(response);
-                },
-                error: function(err){
-                    alert(err);
-                }
-            });
-        });
+       
         this.scoreText = this.add.text(textX, textY, 'Score: ' + moves, { fontSize: 24 });
         this.timeText = this.add.text(textX + 160, textY, '', { fontSize: 24 });
 
         this.Deck = new Deck(this);
-        //this.loadFile();
-        this.Deck.createDeck();
-        //localStorage.clear();
-        //this.saveFile();
+        //this.Deck.createDeck();
+        this.Deck.createDemo();
         this.Deck.render(deckX, deckY);
 
         this.Tableau = new Tableau(this, this.Deck.deal());
@@ -78,13 +40,14 @@ export class Game extends Phaser.Scene {
 
         this.Foundation = new Foundation(this);
         this.Foundation.render(foundationX, deckY, horizonalSpacing);
-
+    
         this.input.on('drop', (pointer, card, dropZone) => {
             let target = dropZone.getData('array').at(dropZone.getData('array').length - 1);
             this.dropped = false;
 
             if (dropZone.getData('type') == 'foundation') {
-                if (((dropZone.getData('array').length == 0) && (card.getData('number') == 1)) || ((dropZone.getData('array').length > 0) && (card.getData('number') == target.getData('number') + 1) && (card.getData('suit') == target.getData('suit')))) {
+                if (((dropZone.getData('array').length == 0) && (card.getData('number') == 1)) || 
+                ((dropZone.getData('array').length > 0) && (card.getData('number') == target.getData('number') + 1) && (card.getData('suit') == target.getData('suit')))) {
                     dropZone.getData('array').push(card.getData('location').pop(card));
                     card.setData({'location': dropZone.getData('array')});
                     this.dropped = true;
@@ -92,7 +55,8 @@ export class Game extends Phaser.Scene {
             } else if (dropZone.getData('type') == 'tableau') {
                 if (dropZone.getData('array').length == 0 && card.getData('number') != 13) {
                     return;
-                } else if (((card.getData('number') == 13) && (dropZone.getData('array').length == 0)) || ((card.getData('number') == target.getData('number') - 1) && (target.getData('color') != card.getData('color')))) {
+                } else if (((card.getData('number') == 13) && (dropZone.getData('array').length == 0)) || 
+                ((card.getData('number') == target.getData('number') - 1) && (target.getData('color') != card.getData('color')))) {
                     if (card.getData('group') != undefined) {
                         let groupArray = card.getData('group').getChildren();
                         for (let i = 0; i <= groupArray.length-1; i++) {
@@ -109,7 +73,9 @@ export class Game extends Phaser.Scene {
                     this.dropped = true;
                 }
             }
-        }).on('dragend', (pointer, card, dropped) => {
+        })
+        
+        this.input.on('dragend', (pointer, card, dropped) => {
             if(this.dropped) {
                 this.dropped = false;
                 moves = moves + 1;
@@ -122,6 +88,24 @@ export class Game extends Phaser.Scene {
             this.Foundation.update(foundationX, deckY, horizonalSpacing);
             this.winConditions();
         });
+
+        this.doubleClick = (card) => {
+            let array = this.Foundation.getFoundation();
+            
+            for (let i = 0; i <= 4; i++) {
+                if (array[i].length == 0 && (card.getData('number') == 1)) {
+                    array[i].push(card.getData('location').pop());
+                    this.dropped = true;
+                    return;
+                } else if (card.getData('suit') == array[i][array[i].length-1].getData('suit') && card.getData('number') == (array[i][array[i].length-1].getData('number') + 1)) {
+                    array[i].push(card.getData('location').pop());
+                    this.dropped = true;
+                    return;
+                }
+            }
+
+            this.Foundation.setFoundation(array);
+        }
 
         this.winConditions = () => {
             let arrays = this.Tableau.getTableau().concat(this.Foundation.getFoundation());
@@ -136,32 +120,51 @@ export class Game extends Phaser.Scene {
             }
             
             if (j == 4) {
-                gameOver = true;
+                this.gameOver = true;
 
-                this.scene.pause('Game');
-                /*
-                this.scoreText = this.add.text(0, 40, 'Submit Score').setInteractive().on('pointerdown', () => {
-                    var username = data.firstName;
-                    var time = this.timer();
-                    var score = moves;
-    
-                    var jsonString = {username: username, time: time, score: score};
-            
+                this.add.text(860, 80, 'Submit Score', { fontSize: 24, textColor: 0x000000 }).setInteractive().on('pointerdown', () => {
+                    let loggedIn = false;
+                    let username = '';
+                    let score = moves;
+                    let time = this.timer();
+        
                     $.ajax({
-                        url: libraryURL + "/index",
-                        type:"post",
-                        data: jsonString,
+                        url: libraryURL + "/users",
+                        type: "get",
                         success: function(response){
-                            var test1 = "";
-                            alert(response);
+                            let responseData = JSON.parse(response);
+                            let usersTable = responseData.game;
+        
+                            for(let i of usersTable) {
+                                if (document.getElementById('userID').textContent == i._id) {
+                                    username = i.username;
+                                    loggedIn = true;
+                                }
+                            }
+        
+                            if (loggedIn) {
+                                let jsonString = { username: username, score: score, time: time };
+                    
+                                $.ajax({
+                                    url: libraryURL + "/leaderboard",
+                                    type:"post",
+                                    data: jsonString,
+                                    success: function(response){
+                                        alert(response);
+                                    },
+                                    error: function(err){
+                                        alert(err);
+                                    }
+                                });
+                            } else {
+                                alert('Error: not logged in');
+                            }
                         },
                         error: function(err){
-                            var test2 = "";
                             alert(err);
                         }
                     });
                 });
-                */
             }
         }
 
@@ -185,17 +188,19 @@ export class Game extends Phaser.Scene {
             }        
 
             if (seconds < 10) {
-                time = 'Time: ' + minutes + ':0' + seconds;
+                time = minutes + ':0' + seconds;
             } else {
-                time = 'Time: ' + minutes + ':' + seconds;
+                time = minutes + ':' + seconds;
             }
 
-            this.timeText.setText(time);
+            this.timeText.setText('Time: ' + time);
             return time;
         }
-    }
+    }   
 
     update () {
-       this.timer();
+        if (!this.gameOver) {
+            this.timer();
+        }
     }
 }

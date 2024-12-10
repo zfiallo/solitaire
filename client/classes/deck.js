@@ -54,13 +54,37 @@ export default class Deck {
             });  
         }
 
+        this.createDemo = () => {
+            ///*  create demo deck
+            let s = [3, 3, 2, 2, 3, 2, 1, 2, 1, 1, 4, 4, 1, 4, 1, 2, 4, 3, 4, 4, 1, 3, 2, 1, 1, 4, 4, 3, 2, 2, 3, 3, 1, 2, 1, 4, 2, 3, 4, 3, 3, 1, 4, 2, 3, 2, 4, 3, 4, 2, 1, 1];
+            let n = [1, 6, 4, 7, 7, 9, 5, 3, 10, 8, 5, 12, 12, 2, 4, 8, 1, 2, 11, 7, 2, 13, 5, 3, 9, 4, 6, 3, 1, 10, 5, 10, 1, 12, 13, 9, 11, 9, 8, 11, 12, 6, 10, 13, 8, 2, 3, 4, 13, 6, 7, 11];
+            
+            this.Card = new Card(scene);
+
+            for (let i = 0; i < 52; i++) {
+                this.deck.push(this.Card.render(0, 0, s[i], n[i]));
+            }
+            //*/
+            /*  get random deck
+            let s = [];
+            let n = [];
+
+
+            for (let i = 0; i < 52; i++) {
+                s.push(this.deck[i].getData('suit'));
+                n.push(this.deck[i].getData('number'));
+            }
+            console.log(s, n);
+            */
+        }
+
         this.createDeck = () => {
             let temp = [];
-
+            this.Card = new Card(scene);
             // adds cards - spades = 1, hearts = 2, clubs = 3, diamonds = 4
             for (let s = 1; s <= 4; s++) {
                 for (let n = 1; n <= 13; n++) {
-                    this.deck.push(new Card(scene, s, n).render(0, 0));
+                    this.deck.push(this.Card.render(0, 0, s, n));
                 }
             }
 
@@ -78,7 +102,6 @@ export default class Deck {
                     this.deck.splice(k, 1);
                 }
             }
-            //return this.deck;
         }
 
         this.deal = () => { 

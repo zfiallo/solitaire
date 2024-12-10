@@ -1,6 +1,7 @@
 export default class Tableau {
     constructor(scene, tableau) {
         this.tableau = tableau;
+        
         this.render = (x, y, h, v) => {
             
             this.renderZones(x, y, h, v);
@@ -17,7 +18,7 @@ export default class Tableau {
                     dropZone: true,
                 }).setData({
                     "type": 'tableau',
-                    'array': tableau[i]
+                    'array': this.tableau[i]
                 });
                 //this.showZones(zone);
             }
@@ -30,14 +31,14 @@ export default class Tableau {
         this.update = (x, y, h, v) => {
             for (let i = 0; i < 7; i++) {
                 for (let j = 0; j <= tableau[i].length-1; j++) {
-                    tableau[i][j].onTop = false;
-                    tableau[i][j].setVisible(true).setPosition(x + (i * h), y + (j * v)).setDepth(j + 1).setData({
-                        "location": tableau[i],
+                    this.tableau[i][j].onTop = false;
+                    this.tableau[i][j].setVisible(true).setPosition(x + (i * h), y + (j * v)).setDepth(j + 1).setData({
+                        "location": this.tableau[i],
                         "originX": x + (i * h),
                         "originY": y + (j * v)
                     });
                     if (j == tableau[i].length-1) {
-                        tableau[i][j].onTop = true;
+                        this.tableau[i][j].onTop = true;
                     }
                 }
             }
@@ -48,12 +49,14 @@ export default class Tableau {
             for (let i = 0; i < 7; i++) {
                 for (let j = 0; j <= i; j++) {
                     if (i > j) {
-                        tableau[i][j].setTexture('deckSprites', [2]);
-                        tableau[i][j].isFlipped = true;
+                        this.tableau[i][j].setTexture('deckSprites', [2]);
+                        this.tableau[i][j].isFlipped = true;
                     }
                     if (i == j) {
-                        scene.input.setDraggable(tableau[i][j]);
-                        tableau[i][j].onTop = true;
+                        //let card = this.tableau[i][j];
+                        //console.log(card.getData('suit'));
+                        scene.input.setDraggable(this.tableau[i][j]);
+                        this.tableau[i][j].onTop = true;
                     }
                 }
             }

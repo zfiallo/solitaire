@@ -5,6 +5,7 @@ export class Signup extends Phaser.Scene {
 
     init (data) {
         this.exists = false;
+        this.userID = '';
     }
 
     preload () {
@@ -55,7 +56,10 @@ export class Signup extends Phaser.Scene {
                     radius: 0,
                     'hover.strokeColor': 0xffffff,
                 },
-                text: { fontSize: 20, color:  '0x000000' },
+                text: { 
+                    fontSize: 20, 
+                    color:  '0x000000'
+                },
             },
             modal: {
                 touchOutsideClose: true,

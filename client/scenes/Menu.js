@@ -5,7 +5,7 @@ export class Menu extends Phaser.Scene {
             active: true
         });
     }
-    
+
     preload () {
         this.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
     }
@@ -14,7 +14,7 @@ export class Menu extends Phaser.Scene {
         let scene = this;
         let x = 0;
         let y = 0;
-
+        console.log(window.innerWidth);
         let blankSpace = '                                                                                     ';
         //let blankSpace = '                                                                                                                                   ';
 
@@ -82,7 +82,7 @@ export class Menu extends Phaser.Scene {
                 });
             },
         };
-
+        
         let menu = scene.rexUI.add.menu(menuConfig).on('button.click', function(button, index, pointer, event) {
             if(button.text == 'Game') {
                 let subMenu = scene.rexUI.add.menu(subMenuConfig).on('button.click', function(button, index, pointer, event) {
@@ -100,12 +100,10 @@ export class Menu extends Phaser.Scene {
                         scene.scene.pause('Game');
                         scene.scene.start('Signup');
                         scene.scene.moveAbove('Signup', 'Menu');
-                        //console.log(scene.Signup.getSuccess());
                     } else if (button.text == 'Log In') {
                         scene.scene.pause('Game');
                         scene.scene.start('Login');
                         scene.scene.moveAbove('Login', 'Menu');
-                        //console.log(scene.scene.Login.getSuccess());
                     }
                     scene.scene.restart('Menu');
                     subMenu.collapse();

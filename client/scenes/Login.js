@@ -1,3 +1,5 @@
+//import { User } from './scenes/User.js';
+
 export class Login extends Phaser.Scene {
     constructor () {
         super('Login');
@@ -5,6 +7,7 @@ export class Login extends Phaser.Scene {
     
     init (data) {
         this.exists = false;
+        this.userID = '';
     }
 
     preload () {
@@ -13,7 +16,6 @@ export class Login extends Phaser.Scene {
     }
 
     create () {
-        let userID;
 
         let style = {
             x: (window.innerWidth / 2),
@@ -48,7 +50,10 @@ export class Login extends Phaser.Scene {
                     'cursor.color': 'black',
                     'cursor.backgroundColor': 'black',
                 },
-                text: { fontSize: 20, color: 0x000000 }
+                text: { 
+                    fontSize: 20, 
+                    color: 0x000000 
+                }
             },
             button: {
                 space: { left: 5, right: 5, top: 5, bottom: 5 },
@@ -57,7 +62,10 @@ export class Login extends Phaser.Scene {
                     radius: 0,
                     'hover.strokeColor': 0xffffff,
                 },
-                text: { fontSize: 20, color:  '0x000000' },
+                text: { 
+                    fontSize: 20, 
+                    color: '0x000000' 
+                },
             },
             modal: {
                 touchOutsideClose: true,
@@ -83,18 +91,17 @@ export class Login extends Phaser.Scene {
                     let usersTable = responseData.game;
 
                     for(let i of usersTable) {
-                        if (i.username == data.firstName && i.password == data.lastName) {
-                            userID = i._id;
+                        if (data.firstName == i.username && data.lastName == i.password) {
+                            this.userID = i._id;
                             this.exists = true;
                         }
                     }
 
                     if (this.exists) {
                         alert('Log in successful');
-                        //modal.requestClose();
+                        document.getElementById('userID').textContent = this.userID;
                     } else {
                         alert('Log in failed');
-                        //scene.scene.restart('Login');
                     }
                 },
                 error: function(err){
