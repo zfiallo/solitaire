@@ -14,9 +14,14 @@ export class Menu extends Phaser.Scene {
         let scene = this;
         let x = 0;
         let y = 0;
-        console.log(window.innerWidth);
-        let blankSpace = '                                                                                     ';
-        //let blankSpace = '                                                                                                                                   ';
+        let blankSpace = '';
+
+        // makes sure the leaderboard button is always on right side of the screen
+        let s = (window.innerWidth * (23/277)) - 28.422382671480144404332129963899;
+
+        for (let i = 0; i < s; i++) {
+            blankSpace = blankSpace + ' ';
+        }
 
         let menuConfig = {
             x: x,
@@ -85,11 +90,11 @@ export class Menu extends Phaser.Scene {
         
         let menu = scene.rexUI.add.menu(menuConfig).on('button.click', function(button, index, pointer, event) {
             if(button.text == 'Game') {
+                // dropdown menu
                 let subMenu = scene.rexUI.add.menu(subMenuConfig).on('button.click', function(button, index, pointer, event) {
                     if (button.text == 'Deal') {
                         scene.scene.stop('Game');
                         scene.scene.start('Game');
-                        //scene.scene.restart('Menu');
                     } else if (button.text == 'Undo') {
                         
                     }else if (button.text == 'Deck') {
@@ -119,9 +124,5 @@ export class Menu extends Phaser.Scene {
                 scene.scene.restart('Menu');
             }
         });
-    }
-
-    update () {
-
     }
 }

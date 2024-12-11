@@ -14,13 +14,18 @@ export class Signup extends Phaser.Scene {
     }
 
     create () {
-        let style = {
+        let config = {
             x: (window.innerWidth / 2),
             y: (window.innerHeight / 2),
             space: {
-                left: 20, right: 20, top: 20, bottom: 20,
+                left: 20, 
+                right: 20, 
+                top: 20, 
+                bottom: 20,
                 item: 20,
-                firstName: 20, firstNameTitle: 10, lastNameTitle: 10,
+                firstName: 20, 
+                firstNameTitle: 10, 
+                lastNameTitle: 10,
             },
             background: { 
                 color: 0x008000, 
@@ -29,16 +34,22 @@ export class Signup extends Phaser.Scene {
                 radius: 0, 
             },
             title: {
-                text: { fontSize: 24 }
+                text: { 
+                    fontSize: 24 
+                }
             },
             layoutMode: 1,
             nameTitle: {
                 width: 150,
-                text: { fontSize: 24 }
+                text: { 
+                    fontSize: 24 
+                }
             },
             nameInput: {
                 width: 200,
-                background: { color: 0xFFFFFF },
+                background: { 
+                    color: 0xFFFFFF 
+                },
                 style: {
                     backgroundBottomY: 4,
                     backgroundHeight: 18,
@@ -47,10 +58,18 @@ export class Signup extends Phaser.Scene {
                     'cursor.color': 'black',
                     'cursor.backgroundColor': 'black',
                 },
-                text: { fontSize: 20, color: 0x000000 }
+                text: { 
+                    fontSize: 20, 
+                    color: 0x000000 
+                }
             },
             button: {
-                space: { left: 5, right: 5, top: 5, bottom: 5 },
+                space: { 
+                    left: 5, 
+                    right: 5, 
+                    top: 5, 
+                    bottom: 5 
+                },
                 background: {
                     color:  0xffffff,
                     radius: 0,
@@ -70,14 +89,15 @@ export class Signup extends Phaser.Scene {
             }
         }
 
-        this.rexUI.add.nameInputDialog(style).resetDisplayContent({
+        this.rexUI.add.nameInputDialog(config).resetDisplayContent({
             title: 'Sign Up',
             firstNameTitle: 'username: ',
             lastNameTitle: 'password: ',
             button: 'Enter'
         }).layout().modalPromise().then(function (data) {
             let jsonString = { username: data.firstName, password: data.lastName };
-            
+
+            // check if username already exists
             $.ajax({
                 url: libraryURL + "/users",
                 type: "get",
@@ -94,6 +114,7 @@ export class Signup extends Phaser.Scene {
                     if (this.exists) {
                         alert('Sign up failed - username already in use');
                     } else {
+                        // if not, adds to db
                         $.ajax({
                             url: libraryURL + "/users",
                             type: "post",
@@ -112,9 +133,5 @@ export class Signup extends Phaser.Scene {
                 }
             });
         });
-    }
-
-    update () {
-
     }
 }

@@ -16,7 +16,7 @@ export class Game extends Phaser.Scene {
     create () {
         this.gameOver = false;
 
-        let deckX = (window.innerWidth / 2 ) - 255;
+        let deckX = (window.innerWidth / 2) - 255;
         let deckY = (window.innerHeight / 5);
         let tableauX = deckX - 2;
         let tableauY = deckY + 110; 
@@ -31,8 +31,8 @@ export class Game extends Phaser.Scene {
         this.timeText = this.add.text(textX + 160, textY, '', { fontSize: 24 });
 
         this.Deck = new Deck(this);
-        //this.Deck.createDeck();
-        this.Deck.createDemo();
+        this.Deck.createDeck();
+        //this.Deck.createDemo();       // winnable deck for demo
         this.Deck.render(deckX, deckY);
 
         this.Tableau = new Tableau(this, this.Deck.deal());
@@ -45,6 +45,7 @@ export class Game extends Phaser.Scene {
             let target = dropZone.getData('array').at(dropZone.getData('array').length - 1);
             this.dropped = false;
 
+            // conditions for valid move
             if (dropZone.getData('type') == 'foundation') {
                 if (((dropZone.getData('array').length == 0) && (card.getData('number') == 1)) || 
                 ((dropZone.getData('array').length > 0) && (card.getData('number') == target.getData('number') + 1) && (card.getData('suit') == target.getData('suit')))) {
@@ -89,15 +90,13 @@ export class Game extends Phaser.Scene {
             this.winConditions();
         });
 
+        // sends cards to foundation on doubleclick
         this.doubleClick = (card) => {
             let array = this.Foundation.getFoundation();
             
             for (let i = 0; i <= 4; i++) {
-                if (array[i].length == 0 && (card.getData('number') == 1)) {
-                    array[i].push(card.getData('location').pop());
-                    this.dropped = true;
-                    return;
-                } else if (card.getData('suit') == array[i][array[i].length-1].getData('suit') && card.getData('number') == (array[i][array[i].length-1].getData('number') + 1)) {
+                if ((array[i].length == 0 && (card.getData('number') == 1)) || 
+                ((card.getData('suit') == array[i][array[i].length-1].getData('suit')) && (card.getData('number') == array[i][array[i].length-1].getData('number') + 1))) {
                     array[i].push(card.getData('location').pop());
                     this.dropped = true;
                     return;
@@ -107,6 +106,7 @@ export class Game extends Phaser.Scene {
             this.Foundation.setFoundation(array);
         }
 
+        // check if game is over
         this.winConditions = () => {
             let arrays = this.Tableau.getTableau().concat(this.Foundation.getFoundation());
             let j = 0;
@@ -122,12 +122,13 @@ export class Game extends Phaser.Scene {
             if (j == 4) {
                 this.gameOver = true;
 
-                this.add.text(860, 80, 'Submit Score', { fontSize: 24, textColor: 0x000000 }).setInteractive().on('pointerdown', () => {
+                // render submit score button
+                this.add.text(window.innerWidth - 230, 55, 'Submit Score', { fontSize: 24, textColor: 0x000000 }).setInteractive().on('pointerdown', () => {
                     let loggedIn = false;
                     let username = '';
                     let score = moves;
                     let time = this.timer();
-        
+                    // check if player is logged in
                     $.ajax({
                         url: libraryURL + "/users",
                         type: "get",
@@ -141,10 +142,10 @@ export class Game extends Phaser.Scene {
                                     loggedIn = true;
                                 }
                             }
-        
+                            // submit score to leaderboard
                             if (loggedIn) {
                                 let jsonString = { username: username, score: score, time: time };
-                    
+                                
                                 $.ajax({
                                     url: libraryURL + "/leaderboard",
                                     type:"post",

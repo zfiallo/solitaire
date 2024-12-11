@@ -34,12 +34,14 @@ export default class Card {
                 "originX": originX,
                 "originY": originY
             }).on('pointerdown', () => {
+                // flips cards over when they are on top
                 if(card.isFlipped && card.onTop) {
                     isFlipped = false;
                     card.setTexture('cardSprites', frame);
                     scene.input.setDraggable(card);
                 }
 
+                // double click functionality
                 if (this.firstClickTime == 0) {
                     this.firstClickTime = new Date();
                     return;
@@ -56,7 +58,7 @@ export default class Card {
             }).on('drag', (pointer, dragX, dragY) => {
                 let thisArray =  card.getData('location');
 
-                if ((thisArray.length - 1) != thisArray.indexOf(card)) {
+                if ((thisArray.length - 1) != thisArray.indexOf(card)) {        // drag multiple cards at once
                     let group = scene.add.group();
 
                     for (let i = thisArray.indexOf(card); i <= thisArray.length - 1; i++) {
@@ -67,7 +69,7 @@ export default class Card {
                     
                     group.setXY(dragX, dragY, 0, 20);
                     return group;
-                } else {
+                } else {                                // basic drag function
                     scene.children.bringToTop(card);
                     card.x = dragX;
                     card.y = dragY;
@@ -75,14 +77,6 @@ export default class Card {
             });
             
             return card;
-        }
-
-        this.getLocation = () => {
-            return this.location;
-        }
-
-        this.setLocation = (location) => {
-            this.location = location;
         }
     }
 }

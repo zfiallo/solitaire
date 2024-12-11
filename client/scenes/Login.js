@@ -1,5 +1,3 @@
-//import { User } from './scenes/User.js';
-
 export class Login extends Phaser.Scene {
     constructor () {
         super('Login');
@@ -17,13 +15,18 @@ export class Login extends Phaser.Scene {
 
     create () {
 
-        let style = {
+        let config = {
             x: (window.innerWidth / 2),
             y: (window.innerHeight / 2),
             space: {
-                left: 20, right: 20, top: 20, bottom: 20,
+                left: 20, 
+                right: 20, 
+                top: 20, 
+                bottom: 20,
                 item: 20,
-                firstName: 20, firstNameTitle: 10, lastNameTitle: 10,
+                firstName: 20, 
+                firstNameTitle: 10, 
+                lastNameTitle: 10,
             },
             background: { 
                 color: 0x008000, 
@@ -32,16 +35,22 @@ export class Login extends Phaser.Scene {
                 radius: 0, 
             },
             title: {
-                text: { fontSize: 24 }
+                text: { 
+                    fontSize: 24 
+                }
             },
             layoutMode: 1,
             nameTitle: {
                 width: 150,
-                text: { fontSize: 24 }
+                text: { 
+                    fontSize: 24 
+                }
             },
             nameInput: {
                 width: 200,
-                background: { color: 0xFFFFFF },
+                background: { 
+                    color: 0xFFFFFF 
+                },
                 style: {
                     backgroundBottomY: 4,
                     backgroundHeight: 18,
@@ -56,7 +65,12 @@ export class Login extends Phaser.Scene {
                 }
             },
             button: {
-                space: { left: 5, right: 5, top: 5, bottom: 5 },
+                space: { 
+                    left: 5, 
+                    right: 5, 
+                    top: 5, 
+                    bottom: 5 
+                },
                 background: {
                     color:  0xffffff,
                     radius: 0,
@@ -69,7 +83,6 @@ export class Login extends Phaser.Scene {
             },
             modal: {
                 touchOutsideClose: true,
-                //manualClose: true,
                 //duration: {
                 //    in: 0,
                 //    out: 0
@@ -77,7 +90,7 @@ export class Login extends Phaser.Scene {
             }
         }
 
-        this.rexUI.add.nameInputDialog(style).resetDisplayContent({
+        this.rexUI.add.nameInputDialog(config).resetDisplayContent({
             title: 'Log In',
             firstNameTitle: 'username: ',
             lastNameTitle: 'password: ',
@@ -89,7 +102,8 @@ export class Login extends Phaser.Scene {
                 success: function(response){
                     let responseData = JSON.parse(response);
                     let usersTable = responseData.game;
-
+                    
+                    // check if login is valid
                     for(let i of usersTable) {
                         if (data.firstName == i.username && data.lastName == i.password) {
                             this.userID = i._id;
@@ -109,10 +123,6 @@ export class Login extends Phaser.Scene {
                 }
             });
         });
-
-    }
-
-    update () {
 
     }
 }

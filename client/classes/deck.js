@@ -2,7 +2,6 @@ import Card from '../classes/card.js';
 
 export default class Deck {
     constructor(scene) {
-        //let deck = [];
         let waste = [];
         let reset = false;
         let isEmpty = false;
@@ -11,13 +10,14 @@ export default class Deck {
         this.render = (x, y) => {
 
             let deckSprite = scene.add.sprite(x, y, 'deckSprites').setFrame(0).setScale(1, 1).setInteractive().on('pointerdown', () => {
-
+                // prevents errors when deck is empty
                 if(this.deck.length == 0 && waste.length == 0) {
                     deckSprite.setFrame(3).setX(x - 3);
                     return;
                 }
 
-                if(reset) {
+                // resets the deck when all cards are cycled through
+                if(reset) {                                 
                     deckSprite.setFrame(0);
                     for (let j = 0; j <= waste.length-1; j++) {
                         waste[j].setVisible(false);
@@ -31,6 +31,7 @@ export default class Deck {
                 let thisCard = this.deck.pop();
                 scene.children.bringToTop(thisCard);
 
+                // renders current card
                 thisCard.setVisible(true).setPosition(((window.innerWidth / 2 ) - 255) + 78, window.innerHeight / 5).setData({
                     "location": waste,
                     "originX": ((window.innerWidth / 2 ) - 255) + 78,
@@ -39,7 +40,8 @@ export default class Deck {
                 
                 scene.input.setDraggable(thisCard);
                 waste.push(thisCard);
-
+                
+                // updates deck sprite based on array length
                 if (this.deck.length > 16) {
                     deckSprite.setFrame(0);
                 } else if (this.deck.length > 8) {
