@@ -97,7 +97,7 @@ export class Signup extends Phaser.Scene {
         }).layout().modalPromise().then(function (data) {
             let jsonString = { username: data.firstName, password: data.lastName };
 
-            // check if username already exists
+            // check if username is valid
             $.ajax({
                 url: libraryURL + "/users",
                 type: "get",
@@ -105,13 +105,16 @@ export class Signup extends Phaser.Scene {
                     let responseData = JSON.parse(response);
                     let usersTable = responseData.game;
 
-                    for(let i of usersTable) {
+                    // checks if username already exists
+                    for (let i of usersTable) {
                         if (i.username == data.firstName) {
                             this.exists = true;
                         }
                     }
-
-                    if (this.exists) {
+                    
+                    if (data.firstName.length > 32) {
+                        alert('Sign up failed - username exceeds 32 characters');
+                    } else if (this.exists) {
                         alert('Sign up failed - username already in use');
                     } else {
                         // if not, adds to db
