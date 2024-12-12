@@ -84,7 +84,7 @@ export class Game extends Phaser.Scene {
             } else if (!this.dropped) {
                 this.undoMove(card);
             }
-
+            console.log('a');
             this.Tableau.update(tableauX, tableauY, horizonalSpacing, verticalSpacing);
             this.Foundation.update(foundationX, deckY, horizonalSpacing);
             this.winConditions();
@@ -104,6 +104,11 @@ export class Game extends Phaser.Scene {
             }
 
             this.Foundation.setFoundation(array);
+            this.Tableau.update(tableauX, tableauY, horizonalSpacing, verticalSpacing);
+            this.Foundation.update(foundationX, deckY, horizonalSpacing);
+            this.winConditions();
+            moves = moves + 1;
+            this.scoreText.setText('Score: ' + moves);
         }
 
         // check if game is over
