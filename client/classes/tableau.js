@@ -8,7 +8,7 @@ export default class Tableau {
             this.renderDealtCards();
             this.update(x, y, h, v);
 
-            return tableau;
+            //return tableau;
         }
 
         this.renderZones = (x, y, h, v) => {
@@ -32,14 +32,14 @@ export default class Tableau {
         this.update = (x, y, h, v) => {
             for (let i = 0; i < 7; i++) {
                 for (let j = 0; j <= tableau[i].length-1; j++) {
-                    this.tableau[i][j].onTop = false;
+                    this.tableau[i][j].setData('onTop', false);
                     this.tableau[i][j].setVisible(true).setPosition(x + (i * h), y + (j * v)).setDepth(j + 1).setData({
                         "location": this.tableau[i],
                         "originX": x + (i * h),
                         "originY": y + (j * v)
                     });
                     if (j == tableau[i].length-1) {
-                        this.tableau[i][j].onTop = true;
+                        this.tableau[i][j].setData('onTop', true);
                     }
                 }
             }
@@ -51,14 +51,13 @@ export default class Tableau {
                 for (let j = 0; j <= i; j++) {
                     if (i > j) {
                         this.tableau[i][j].setTexture('deckSprites', [2]);
-                        this.tableau[i][j].isFlipped = true;
+                        this.tableau[i][j].setData('isFlipped', true);
                     }
                     if (i == j) {
-                        //let card = this.tableau[i][j];
-                        //console.log(card.getData('suit'));
                         scene.input.setDraggable(this.tableau[i][j]);
-                        this.tableau[i][j].onTop = true;
+                        this.tableau[i][j].setData('onTop', true);
                     }
+                    this.tableau[i][j].setData('clickTime', 0);
                 }
             }
         }

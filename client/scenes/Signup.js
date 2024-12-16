@@ -15,8 +15,8 @@ export class Signup extends Phaser.Scene {
 
     create () {
         let config = {
-            x: (window.innerWidth / 2),
-            y: (window.innerHeight / 2),
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
             space: {
                 left: 20, 
                 right: 20, 
@@ -91,8 +91,8 @@ export class Signup extends Phaser.Scene {
 
         this.rexUI.add.nameInputDialog(config).resetDisplayContent({
             title: 'Sign Up',
-            firstNameTitle: 'username: ',
-            lastNameTitle: 'password: ',
+            firstNameTitle: 'Username: ',
+            lastNameTitle: 'Password: ',
             button: 'Enter'
         }).layout().modalPromise().then(function (data) {
             let jsonString = { username: data.firstName, password: data.lastName };
@@ -117,13 +117,37 @@ export class Signup extends Phaser.Scene {
                     } else if (this.exists) {
                         alert('Sign up failed - username already in use');
                     } else {
-                        // if not, adds to db
+                        // adds credentials to db
                         $.ajax({
                             url: libraryURL + "/users",
                             type: "post",
                             data: jsonString,
                             success: function(response){
                                 alert('Sign up successful');
+                            },
+                            error: function(err){
+                                alert(err);
+                            }
+                        });
+
+                        // automatically log in
+                        $.ajax({
+                            url: libraryURL + "/users",
+                            type: "get",
+                            success: function(response){
+                                let responseData = JSON.parse(response);
+                                let usersTable = responseData.game;
+                                
+                                // get login info from db
+                                for(let i of usersTable) {
+                                    if (data.firstName == i.username && data.lastName == i.password) {
+                                        this.userID = i._id;
+
+                                    }
+                                }
+
+                                document.getElementById('userID').textContent = this.userID;
+                                alert('You are now logged in');
                             },
                             error: function(err){
                                 alert(err);

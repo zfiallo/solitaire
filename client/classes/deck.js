@@ -4,7 +4,6 @@ export default class Deck {
     constructor(scene) {
         let waste = [];
         let reset = false;
-        let isEmpty = false;
         this.deck = [];
 
         this.render = (x, y) => {
@@ -32,12 +31,13 @@ export default class Deck {
                 scene.children.bringToTop(thisCard);
 
                 // renders current card
-                thisCard.setVisible(true).setPosition(((window.innerWidth / 2 ) - 255) + 78, window.innerHeight / 5).setData({
+                thisCard.setVisible(true).setPosition(x + 78, y).setData({
                     "location": waste,
-                    "originX": ((window.innerWidth / 2 ) - 255) + 78,
-                    "originY": window.innerHeight / 5,
+                    "originX": x + 78,
+                    "originY": y,
+                    "clickTime": 0
                 });
-                
+
                 scene.input.setDraggable(thisCard);
                 waste.push(thisCard);
                 
@@ -116,22 +116,6 @@ export default class Deck {
             }
 
             return tableau;
-        }
-
-        this.getDeck = () => {
-            return this.deck;
-        }
-
-        this.setDeck = (deck) => {
-            this.deck = deck;
-        }
-
-        this.getWaste = () => {
-            return this.waste;
-        }
-
-        this.setWaste = (waste) => {
-            this.waste = waste;
         }
     }
 }

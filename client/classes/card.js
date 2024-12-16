@@ -1,12 +1,9 @@
 export default class Card {
     constructor(scene) {
-        this.firstClickTime = 0;
 
         this.render = (x, y, suit, number) => {
             let originX = x;
             let originY = y;
-            let isFlipped = false;
-            let onTop = false;
             let frame;
             let color;
 
@@ -32,50 +29,62 @@ export default class Card {
                 "location": undefined,
                 "color": color,
                 "originX": originX,
-                "originY": originY
+                "originY": originY,
+                "group": undefined,
+                "isFlipped": false,
+                "onTop": false,
+                "clickTime": 0
             }).on('pointerdown', () => {
+                console.log(card.getData('clickTime'));
                 // flips cards over when they are on top
-                if(card.isFlipped && card.onTop) {
-                    isFlipped = false;
+                if(card.getData('isFlipped') && card.getData('onTop')) {
+                    card.setData('isFlipped', false);
                     card.setTexture('cardSprites', frame);
                     scene.input.setDraggable(card);
+
+                    card.setData('clickTime', 0);   
+                    return;
                 }
 
                 // double click functionality
-                if (this.firstClickTime == 0) {
-                    this.firstClickTime = new Date();
+                if (card.getData('clickTime') == 0) {
+                    card.setData('clickTime', new Date());
                     return;
                 }
                    
-                let elapsed = new Date() - this.firstClickTime;
+                let elapsed = new Date() - card.getData('clickTime');
                    
                 if (elapsed < 350) {
                     scene.doubleClick(card);
+                    card.setData('clickTime', 0);
                 }
-                   
-                this.firstClickTime = 0;
-                
+
+                card.setData('clickTime', 0);
+
             }).on('drag', (pointer, dragX, dragY) => {
                 let thisArray =  card.getData('location');
 
-                if ((thisArray.length - 1) != thisArray.indexOf(card)) {        // drag multiple cards at once
+                if (((thisArray.length - 1) != thisArray.indexOf(card)) && thisArray != 'waste') {        // drag multiple cards at once
                     let group = scene.add.group();
 
                     for (let i = thisArray.indexOf(card); i <= thisArray.length - 1; i++) {
-                        group.add(thisArray.at(i));
-                        scene.children.bringToTop(thisArray.at(i));
-                        thisArray.at(i).setData({'group': group});
+                        group.add(thisArray[i]);
+                        scene.children.bringToTop(thisArray[i]);
+                        thisArray[i].setData({
+                            'group': group,
+                            'clickTime': 0
+
+                        });
                     }
                     
                     group.setXY(dragX, dragY, 0, 20);
-                    return group;
                 } else {                                // basic drag function
                     scene.children.bringToTop(card);
                     card.x = dragX;
                     card.y = dragY;
                 }
             });
-            
+
             return card;
         }
     }

@@ -16,8 +16,8 @@ export class Login extends Phaser.Scene {
     create () {
 
         let config = {
-            x: (window.innerWidth / 2),
-            y: (window.innerHeight / 2),
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
             space: {
                 left: 20, 
                 right: 20, 
@@ -92,8 +92,8 @@ export class Login extends Phaser.Scene {
 
         this.rexUI.add.nameInputDialog(config).resetDisplayContent({
             title: 'Log In',
-            firstNameTitle: 'username: ',
-            lastNameTitle: 'password: ',
+            firstNameTitle: 'Username: ',
+            lastNameTitle: 'Password: ',
             button: 'Enter'
         }).layout().modalPromise().then(function (data) {
             $.ajax({
@@ -103,7 +103,7 @@ export class Login extends Phaser.Scene {
                     let responseData = JSON.parse(response);
                     let usersTable = responseData.game;
                     
-                    // check if login is valid
+                    // get login info from db
                     for(let i of usersTable) {
                         if (data.firstName == i.username && data.lastName == i.password) {
                             this.userID = i._id;

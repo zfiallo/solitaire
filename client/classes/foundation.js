@@ -11,14 +11,14 @@ export default class Foundation {
         this.update = (x, y, s) => {
             for (let i = 0; i < 4; i++) {
                 for (let j = 0; j <= foundation[i].length-1; j++) {
-                    foundation[i][j].onTop = false;
+                    foundation[i][j].setData('onTop', false);
                     foundation[i][j].setVisible(true).setPosition(x + (s * i), y).setDepth(j + 1).setData({
                         "location": foundation[i],
                         "originX": x + (s * i),
                         "originY": y
                     });
                     if (j == foundation[i].length-1) {
-                        foundation[i][j].onTop = true;
+                        foundation[i][j].setData('onTop', true);
                     }
                 }
             }

@@ -14,7 +14,7 @@ export class Game extends Phaser.Scene {
     }
 
     create () {
-        this.gameOver = false;
+        this.paused = false;
 
         let deckX = (window.innerWidth / 2) - 255;
         let deckY = (window.innerHeight / 5);
@@ -31,8 +31,8 @@ export class Game extends Phaser.Scene {
         this.timeText = this.add.text(textX + 160, textY, '', { fontSize: 24 });
 
         this.Deck = new Deck(this);
-        this.Deck.createDeck();
-        //this.Deck.createDemo();       // winnable deck for demo
+        //this.Deck.createDeck();
+        this.Deck.createDemo();       // winnable deck for demo
         this.Deck.render(deckX, deckY);
 
         this.Tableau = new Tableau(this, this.Deck.deal());
@@ -40,7 +40,15 @@ export class Game extends Phaser.Scene {
 
         this.Foundation = new Foundation(this);
         this.Foundation.render(foundationX, deckY, horizonalSpacing);
-    
+        
+        /*
+        $.ajax({
+            url: libraryURL + "/leaderboard",
+            type:"post",
+            data: { username: 'user', score: 'score', time: 'time' },
+        });
+        */
+
         this.input.on('drop', (pointer, card, dropZone) => {
             let target = dropZone.getData('array').at(dropZone.getData('array').length - 1);
             this.dropped = false;
@@ -50,7 +58,7 @@ export class Game extends Phaser.Scene {
                 if (((dropZone.getData('array').length == 0) && (card.getData('number') == 1)) || 
                 ((dropZone.getData('array').length > 0) && (card.getData('number') == target.getData('number') + 1) && (card.getData('suit') == target.getData('suit')))) {
                     dropZone.getData('array').push(card.getData('location').pop(card));
-                    card.setData({'location': dropZone.getData('array')});
+                    card.setData('location', dropZone.getData('array'));
                     this.dropped = true;
                 }
             } else if (dropZone.getData('type') == 'tableau') {
@@ -63,19 +71,21 @@ export class Game extends Phaser.Scene {
                         for (let i = 0; i <= groupArray.length-1; i++) {
                             groupArray[i].getData('location').pop();
                             dropZone.getData('array').push(groupArray[i]);
-                            groupArray[i].setData({'location': dropZone.getData('array')});
+                            groupArray[i].setData('location', dropZone.getData('array'));
                         }
                         card.getData('group').clear();
-                        card.setData({'group': undefined});
+                        card.setData('group', undefined);
                     } else {
                         dropZone.getData('array').push(card.getData('location').pop(card));
-                        card.setData({'location': dropZone.getData('array')});
+                        card.setData('location', dropZone.getData('array'));
                     }
                     this.dropped = true;
                 }
             }
-        })
-        
+
+            card.setData('clickTime', 0);
+        });
+       
         this.input.on('dragend', (pointer, card, dropped) => {
             if(this.dropped) {
                 this.dropped = false;
@@ -84,7 +94,7 @@ export class Game extends Phaser.Scene {
             } else if (!this.dropped) {
                 this.undoMove(card);
             }
-            console.log('a');
+
             this.Tableau.update(tableauX, tableauY, horizonalSpacing, verticalSpacing);
             this.Foundation.update(foundationX, deckY, horizonalSpacing);
             this.winConditions();
@@ -94,21 +104,20 @@ export class Game extends Phaser.Scene {
         this.doubleClick = (card) => {
             let array = this.Foundation.getFoundation();
             
-            for (let i = 0; i <= 4; i++) {
-                if ((array[i].length == 0 && (card.getData('number') == 1)) || 
-                ((card.getData('suit') == array[i][array[i].length-1].getData('suit')) && (card.getData('number') == array[i][array[i].length-1].getData('number') + 1))) {
+            for (let i = 0; i < 4; i++) {
+                if ((array[i].length == 0 && (card.getData('number') == 1))) {
                     array[i].push(card.getData('location').pop());
                     this.dropped = true;
-                    return;
+                    break;
+                } else if ((card.getData('suit') == array[i][array[i].length-1].getData('suit')) && (card.getData('number') == array[i][array[i].length-1].getData('number') + 1)) {
+                    array[i].push(card.getData('location').pop());
+                    this.dropped = true;
+                    break;
                 }
             }
 
             this.Foundation.setFoundation(array);
-            this.Tableau.update(tableauX, tableauY, horizonalSpacing, verticalSpacing);
-            this.Foundation.update(foundationX, deckY, horizonalSpacing);
-            this.winConditions();
-            moves = moves + 1;
-            this.scoreText.setText('Score: ' + moves);
+            card.setData('clickTime', 0);
         }
 
         // check if game is over
@@ -125,7 +134,7 @@ export class Game extends Phaser.Scene {
             }
             
             if (j == 4) {
-                this.gameOver = true;
+                this.paused = true;
 
                 // render submit score button
                 this.add.text(window.innerWidth - 230, 55, 'Submit Score', { fontSize: 24, textColor: 0x000000 }).setInteractive().on('pointerdown', () => {
@@ -133,6 +142,7 @@ export class Game extends Phaser.Scene {
                     let username = '';
                     let score = moves;
                     let time = this.timer();
+
                     // check if player is logged in
                     $.ajax({
                         url: libraryURL + "/users",
@@ -147,6 +157,7 @@ export class Game extends Phaser.Scene {
                                     loggedIn = true;
                                 }
                             }
+
                             // submit score to leaderboard
                             if (loggedIn) {
                                 let jsonString = { username: username, score: score, time: time };
@@ -156,7 +167,7 @@ export class Game extends Phaser.Scene {
                                     type:"post",
                                     data: jsonString,
                                     success: function(response){
-                                        alert(response);
+                                        alert('Score submitted to leaderboard');
                                     },
                                     error: function(err){
                                         alert(err);
@@ -205,7 +216,7 @@ export class Game extends Phaser.Scene {
     }   
 
     update () {
-        if (!this.gameOver) {
+        if (!this.paused) {
             this.timer();
         }
     }
