@@ -22,14 +22,14 @@ export class Game extends Phaser.Scene {
         let tableauY = deckY + 110; 
         let foundationX = deckX + 238; 
         let textX = window.innerWidth - 370; 
-        let textY = window.innerHeight - 50; 
+        let textY = window.innerHeight - 49; 
         let horizonalSpacing = 80;
         let verticalSpacing = 20;
         let moves = 0;
        
         this.add.rectangle(0, window.innerHeight - 20, window.innerWidth * 2, 80, 0xFFFFFF);
-        this.scoreText = this.add.text(textX, textY, 'Score: ' + moves, { fontSize: 24, color: '0x000000' });
-        this.timeText = this.add.text(textX + 160, textY, '', { fontSize: 24, color: '0x000000' });
+        this.scoreText = this.add.text(textX, textY, 'Score: ' + moves, { fontSize: 20, color: '0x000000' });
+        this.timeText = this.add.text(textX + 160, textY, '', { fontSize: 20, color: '0x000000' });
 
         this.Deck = new Deck(this);
         this.Deck.createDeck();
