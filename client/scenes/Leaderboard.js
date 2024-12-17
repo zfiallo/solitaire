@@ -86,6 +86,6 @@ export class Leaderboard extends Phaser.Scene {
         }
 
         // makes sure ajax request finishes before rendering table 
-        this.table = setTimeout(()=> this.renderTable(), 100);
+        this.table = setTimeout(()=> this.renderTable(), 250);
     }
 }
