@@ -35,7 +35,7 @@ export default class Card {
                 "onTop": false,
                 "clickTime": 0
             }).on('pointerdown', () => {
-                console.log(card.getData('clickTime'));
+
                 // flips cards over when they are on top
                 if(card.getData('isFlipped') && card.getData('onTop')) {
                     card.setData('isFlipped', false);

@@ -27,10 +27,10 @@ export default class Deck {
                     return;
                 }
                 
+                // render current card
                 let thisCard = this.deck.pop();
                 scene.children.bringToTop(thisCard);
 
-                // renders current card
                 thisCard.setVisible(true).setPosition(x + 78, y).setData({
                     "location": waste,
                     "originX": x + 78,

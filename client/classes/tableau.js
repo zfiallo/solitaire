@@ -8,7 +8,6 @@ export default class Tableau {
             this.renderDealtCards();
             this.update(x, y, h, v);
 
-            //return tableau;
         }
 
         this.renderZones = (x, y, h, v) => {

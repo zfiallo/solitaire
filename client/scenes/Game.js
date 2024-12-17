@@ -27,12 +27,13 @@ export class Game extends Phaser.Scene {
         let verticalSpacing = 20;
         let moves = 0;
        
-        this.scoreText = this.add.text(textX, textY, 'Score: ' + moves, { fontSize: 24 });
-        this.timeText = this.add.text(textX + 160, textY, '', { fontSize: 24 });
+        this.add.rectangle(0, window.innerHeight - 20, window.innerWidth * 2, 80, 0xFFFFFF);
+        this.scoreText = this.add.text(textX, textY, 'Score: ' + moves, { fontSize: 24, color: '0x000000' });
+        this.timeText = this.add.text(textX + 160, textY, '', { fontSize: 24, color: '0x000000' });
 
         this.Deck = new Deck(this);
-        //this.Deck.createDeck();
-        this.Deck.createDemo();       // winnable deck for demo
+        this.Deck.createDeck();
+        //this.Deck.createDemo();       // winnable deck for demo
         this.Deck.render(deckX, deckY);
 
         this.Tableau = new Tableau(this, this.Deck.deal());
@@ -42,6 +43,7 @@ export class Game extends Phaser.Scene {
         this.Foundation.render(foundationX, deckY, horizonalSpacing);
         
         /*
+        // adds headers to leaderboard table
         $.ajax({
             url: libraryURL + "/leaderboard",
             type:"post",
@@ -104,6 +106,7 @@ export class Game extends Phaser.Scene {
         this.doubleClick = (card) => {
             let array = this.Foundation.getFoundation();
             
+            // valid move conditions
             for (let i = 0; i < 4; i++) {
                 if ((array[i].length == 0 && (card.getData('number') == 1))) {
                     array[i].push(card.getData('location').pop());
