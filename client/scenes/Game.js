@@ -15,6 +15,7 @@ export class Game extends Phaser.Scene {
 
     create () {
         this.paused = false;
+        let clicked = false;
 
         let deckX = (window.innerWidth / 2) - 255;
         let deckY = (window.innerHeight / 5);
@@ -32,8 +33,8 @@ export class Game extends Phaser.Scene {
         this.timeText = this.add.text(textX + 160, textY, '', { fontSize: 20, color: '0x000000' });
 
         this.Deck = new Deck(this);
-        this.Deck.createDeck();
-        //this.Deck.createDemo();       // winnable deck for demo
+        //this.Deck.createDeck();
+        this.Deck.createDemo();       // winnable deck for demo
         this.Deck.render(deckX, deckY);
 
         this.Tableau = new Tableau(this, this.Deck.deal());
@@ -162,22 +163,25 @@ export class Game extends Phaser.Scene {
                             }
 
                             // submit score to leaderboard
-                            if (loggedIn) {
-                                let jsonString = { username: username, score: score, time: time };
+                            if (!clicked) {
+                                if (loggedIn) {
+                                    let jsonString = { username: username, score: score, time: time };
                                 
-                                $.ajax({
-                                    url: libraryURL + "/leaderboard",
-                                    type:"post",
-                                    data: jsonString,
-                                    success: function(response){
-                                        alert('Score submitted to leaderboard');
-                                    },
-                                    error: function(err){
-                                        alert(err);
-                                    }
-                                });
-                            } else {
-                                alert('Error: not logged in');
+                                    $.ajax({
+                                        url: libraryURL + "/leaderboard",
+                                        type:"post",
+                                        data: jsonString,
+                                        success: function(response){
+                                            alert('Score submitted to leaderboard');
+                                            clicked = true;
+                                        },
+                                        error: function(err){
+                                            alert(err);
+                                        }
+                                    });
+                                } else {
+                                    alert('Error: not logged in');
+                                }
                             }
                         },
                         error: function(err){

@@ -90,6 +90,7 @@ export class Menu extends Phaser.Scene {
         
         let menu = scene.rexUI.add.menu(menuConfig).on('button.click', function(button, index, pointer, event) {
             if(button.text == 'Game') {
+
                 // dropdown menu
                 let subMenu = scene.rexUI.add.menu(subMenuConfig).on('button.click', function(button, index, pointer, event) {
                     if (button.text == 'Deal') {

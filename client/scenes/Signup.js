@@ -14,6 +14,8 @@ export class Signup extends Phaser.Scene {
     }
 
     create () {
+        let scene = this;
+
         let config = {
             x: window.innerWidth / 2,
             y: window.innerHeight / 2,
@@ -117,6 +119,7 @@ export class Signup extends Phaser.Scene {
                     } else if (this.exists) {
                         alert('Sign up failed - username already in use');
                     } else {
+
                         // adds credentials to db
                         $.ajax({
                             url: libraryURL + "/users",
@@ -159,6 +162,8 @@ export class Signup extends Phaser.Scene {
                     alert(err);
                 }
             });
+
+            scene.scene.wake('Game');
         });
     }
 }

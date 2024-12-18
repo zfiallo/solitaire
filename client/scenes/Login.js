@@ -14,6 +14,7 @@ export class Login extends Phaser.Scene {
     }
 
     create () {
+        let scene = this;
 
         let config = {
             x: window.innerWidth / 2,
@@ -122,7 +123,8 @@ export class Login extends Phaser.Scene {
                     alert(err);
                 }
             });
-        });
 
+            scene.scene.wake('Game');
+        });
     }
 }
