@@ -33,8 +33,8 @@ export class Game extends Phaser.Scene {
         this.timeText = this.add.text(textX + 160, textY, '', { fontSize: 20, color: '0x000000' });
 
         this.Deck = new Deck(this);
-        //this.Deck.createDeck();
-        this.Deck.createDemo();       // winnable deck for demo
+        this.Deck.createDeck();
+        //this.Deck.createDemo();       // winnable deck for demo
         this.Deck.render(deckX, deckY);
 
         this.Tableau = new Tableau(this, this.Deck.deal());
